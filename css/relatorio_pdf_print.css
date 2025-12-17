@@ -1,0 +1,294 @@
+@media print {
+  @page {
+    size: A4 landscape;
+    background-color: #fff;
+    max-width: 100%;
+    max-height: 100%;
+  }
+  .no-print {
+    display: none !important;
+  }
+  @page :left {
+    /* Pagina a Esquerda */
+    /* margin-left: 3cm; */
+  }
+
+  @page :right {
+    /* Pagina a Direita */
+    /* //margin-left: 4cm; */
+  }
+
+  @page :first {
+    /* Primeira Pagina */
+  }
+  @page :blank {
+    /* Paginas em Branco*/
+    /* @top-center {
+            content: "This page is intentionally left blank.";
+        }
+        */
+  }
+
+  hr {
+    height: 1px !important;
+    background-color: #f57914 !important;
+    border: none !important;
+    border-top: none !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  body {
+    font-size: 18px !important;
+    width: 100% !important;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #000;
+  }
+  .page {
+    size: A4 portrait;
+    background-color: #fff;
+    max-width: 100%;
+    max-height: 100%;
+  }
+
+  .pagebreak-before {
+    page-break-before: always !important;
+  }
+  .pagebreak-after {
+    page-break-after: always !important;
+  }
+
+  .page-report-A4 {
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  .page-report-head {
+    width: 100% !important;
+    height: auto !important;
+  }
+  .page-report-footer {
+    width: 100% !important;
+    page-break-before: avoid !important;
+    page-break-after: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  .page-report-content {
+    margin: 0 auto !important;
+    width: 100% !important;
+    /* Adjust the width as needed */
+    /* Adjust the height as needed*/
+    padding: 20px !important;
+    box-sizing: border-box !important;
+    /* page-break-inside: avoid; */
+  }
+
+  .titulo-atividade {
+    font-size: 20px !important;
+  }
+  .atividade {
+    align-content: start !important;
+  }
+
+  .atividade-img {
+    width: 100% !important;
+    height: 400px !important;
+    max-height: 100% !important;
+    overflow: hidden !important;
+    margin: 0 auto !important;
+    background-position: center !important;
+    background-size: auto 100% !important;
+    background-repeat: no-repeat !important;
+  }
+  .atividade-img-croqui {
+    width: 100%;
+    height: 470px;
+    max-height: 100%;
+    overflow: hidden !important;
+    margin: 0 auto !important;
+    background-position: center !important;
+    background-size: auto 100% !important;
+    background-repeat: no-repeat !important;
+  }
+
+  .logo {
+    width: 155px !important;
+    padding-right: 10px !important;
+  }
+  .marcador {
+    border-left: 4px solid #f57914 !important;
+  }
+  .border-rounded {
+    border: 2px solid black;
+    border-radius: 20px;
+    padding: 20px;
+  }
+  .border-none {
+    border: none !important;
+  }
+
+  .fs-14 {
+    font-size: 14px !important;
+  }
+  .fs-16 {
+    font-size: 16px !important;
+  }
+  .fs-18 {
+    font-size: 18px !important;
+  }
+  .fs-20 {
+    font-size: 20px !important;
+  }
+  .fs-30 {
+    font-size: 30px !important;
+  }
+  .fs-35 {
+    font-size: 35px !important;
+  }
+  .fs-40 {
+    font-size: 40px !important;
+  }
+  .fs-45 {
+    font-size: 45px !important;
+  }
+  .fs-50 {
+    font-size: 50px !important;
+  }
+
+  .fb {
+    font-weight: bold !important;
+  }
+  .fb-800 {
+    font-weight: 800;
+  }
+
+  .capa-logo {
+    padding-top: 100px;
+    width: 400px;
+  }
+  .capa-cliente {
+    width: 100%;
+    padding: 0px !important;
+    text-align: center;
+  }
+  .capa-fs-18 {
+    font-size: 18px !important;
+  }
+
+  .capa_silver {
+    color: silver !important;
+  }
+
+  .capa-background {
+    background-color: #f57914;
+    color: #fff !important;
+  }
+
+  .capa-background-black {
+    background-color: black !important;
+    color: #fff !important;
+  }
+
+  .capa-fs-20 {
+    font-size: 20px !important;
+  }
+  .pl-30 {
+    padding-left: 30px !important;
+  }
+  .pl-20 {
+    padding-left: 20px !important;
+  }
+  .pl-10 {
+    padding-left: 10px !important;
+  }
+  .p-top-250 {
+    padding-top: 250px;
+  }
+  .p-bottom-250 {
+    padding-bottom: 250px;
+  }
+  .p-bottom-20 {
+    padding-bottom: 20px;
+  }
+  .pd-10 {
+    padding: 30px !important;
+  }
+  .separador {
+    height: 10px;
+    width: 100%;
+    background-color: #f3f3f3;
+  }
+  .bg-capa-bottom {
+    width: 100%;
+    border: none !important;
+    height: 400px;
+    background-image: url("img/Capa_footer.png");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+  }
+  .m-t-0 {
+    margin-top: 0px !important;
+  }
+  .m-b-0 {
+    margin-bottom: 0px !important;
+  }
+  .equalDivide {
+    width: 50% !important;
+  }
+  .text-left {
+    text-align: left !important;
+  }
+
+  img {
+    max-width: 100% !important;
+  }
+
+  div.centerOnPrintedPage {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    /* height: 100vh; */
+  }
+  article,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h1 + p,
+  h2 + p,
+  h3 + p,
+  ul,
+  img,
+  table,
+  figure {
+    /*Para evitar quebrar figuras e tabelas, use a page-break-insidepropriedade.*/
+    page-break-before: avoid !important;
+    page-break-after: avoid !important;
+    page-break-inside: avoid !important;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    font-weight: bold;
+  }
+
+  .p-top-250 {
+    padding-top: 250px;
+  }
+  .p-bottom-250 {
+    padding-bottom: 0px;
+  }
+}
+@media print and (color) {
+  * {
+    -webkit-print-color-adjust: exact !important;
+    /* color-adjust: exact !important; */
+    print-color-adjust: exact !important;
+  }
+}

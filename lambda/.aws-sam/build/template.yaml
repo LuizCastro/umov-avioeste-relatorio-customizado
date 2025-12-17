@@ -1,0 +1,61 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: "Lambda avioeste relat\xF3rio customizado"
+Resources:
+  AvioesteRelatioWeb:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: AvioesteRelatioWeb
+      Description: ''
+      MemorySize: 128
+      Timeout: 3
+      Handler: index.handler
+      Runtime: nodejs20.x
+      Architectures:
+      - x86_64
+      EphemeralStorage:
+        Size: 512
+      EventInvokeConfig:
+        MaximumEventAgeInSeconds: 21600
+        MaximumRetryAttempts: 2
+      FunctionUrlConfig:
+        AuthType: NONE
+        InvokeMode: BUFFERED
+        Cors:
+          AllowCredentials: false
+          AllowOrigins:
+          - '*'
+          ExposeHeaders:
+          - '*'
+          AllowHeaders:
+          - '*'
+          AllowMethods:
+          - GET
+          - POST
+          MaxAge: 0
+      Layers:
+      - Ref: Layer1
+      PackageType: Zip
+      Environment:
+        Variables:
+          DB_HOST: dbview.umov.me
+          DB_USER: u44323
+          DB_PASS: fa179f08a6cdd00ff215516ef2a6c82d
+          DB_NAME: prod_umov_dbview
+          DB_PORT: 9999
+          DB_SCHEMA: u44323
+      Events:
+        ApiEventos:
+          Type: Api
+          Properties:
+            Path: /relatorio
+            Method: get
+    Metadata:
+      SamResourceId: AvioesteRelatioWeb
+  Layer1:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      ContentUri: ..\..\pg_body-parse_express
+      LayerName: pg_body-parse_express
+      CompatibleRuntimes:
+      - nodejs20.x
