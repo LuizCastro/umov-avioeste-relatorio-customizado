@@ -11,6 +11,7 @@
     <meta http-equiv="cache-control" content="max-age=864000" />
     <link rel="stylesheet" type="text/css" href="css/relatorio_pdf_print.css">
     <link rel="stylesheet" type="text/css" href="css/relatorio_pdf_screen.css">
+    <script src="js/jquery-3.7.1.min.js"></script>
 </head>
 <body>
 <div class="no-print navbar">
@@ -68,7 +69,6 @@
             </thead>
             <tbody>
                 <tr class="page-report-content">
-
                     <td class="pd-10">
                         <span class="titulo-atividade">
                             <span class="pl-10 fb-800 fs-35">Cabeçalho</span>
@@ -77,11 +77,90 @@
                             <tbody class="border-none">
                                 <tr class="border-none">
                                     <td class="border-none" width="100%" align="left">
-                                        <p class="fs-30 m-t-0 m-b-0"><label>Número:</label> 163765<br>
-                                            <label>Vendedor:</label> xxxxxxxx<br>
-                                            <label>Categoria de Vendas:</label> xxxxx<br>
-                                            <label>Integradora:</label> xxxxx<br>
-                                            <label>Projeto:</label> xxxxx
+                                        <p class="fs-30 m-t-0 m-b-0"><label>Número: </label> <span id="pedido"></span><br>
+                                            <label>Vendedor: </label><span id="vendedor"></span><br>
+                                            <label>Categoria de Vendas: </label> <span id="categoriaVendas"></span><br>
+                                            <label>Integradora: </label> <span id="integradora"></span><br>
+                                            <label>Projeto: </label> <span id="projeto"></span>
+                                        </p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr class="page-report-content">
+                    <td class="pd-10">
+                        <span class="titulo-atividade">
+                            <span class="pl-10 fb-800 fs-35">Dados do Cliente</span>
+                        </span>
+                        <table width="100%" class="border-rounded" cellpadding="0" cellspacing="0">
+                            <tbody class="border-none">
+                                <tr class="border-none">
+                                    <td class="border-none" width="100%" align="left">
+                                        <p class="fs-30 m-t-0 m-b-0">
+                                            <table width="100%" class="fs-30 m-t-0 m-b-0">
+                                                <tr>
+                                                    <td style="width:100%" colspan="3">Cliente: <span id="cliente"></span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width:100%" colspan="3">Endereço: <span id="endereco"></span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width:40%" >Município: <span id="municipio"></span></td>
+                                                    <td style="width:30%">CEP: <span id="cep"></span></td>
+                                                    <td style="width:30%">UF: <span id="uf"></span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width:40%" >CPF: <span id="cpf"></span></td>
+                                                    <td style="width:30%" >IE: <span id="ie"></span></td>
+                                                    <td style="width:30%">Contato: <span id="contato"></span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width:40%" >Telefone: <span id="telefone"></span></td>
+                                                    <td style="width:30%">Celular: <span id="celular"></span></td>
+                                                    <td></td>
+                                                </tr>
+                                            </table>
+                                        </p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr class="page-report-content">
+                    <td class="pd-10">
+                        <span class="titulo-atividade">
+                            <span class="pl-10 fb-800 fs-35">Participantes</span>
+                        </span>
+                        <table width="100%" class="border-rounded" cellpadding="0" cellspacing="0">
+                            <tbody class="border-none">
+                                <tr class="border-none">
+                                    <td class="border-none" width="100%" align="left">
+                                        <p class="fs-30 m-t-0 m-b-0">
+                                        <table width="100%" class="fs-30 m-t-0 m-b-0">
+                                            <tr>
+                                                <td style="width:50%;" >Nome: <span id="participante_nome_1" style="width: 100%; display: block;border: 1px solid black;"></span></td>
+                                                <td style="width:50%;" >Empresa: <span id="participante_empresa_1" style="width: 100%; display: block; border-bottom: 1pt solid black;"></span></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width:50%" >Nome: <span id="participante_nome_2"></span></td>
+                                                <td style="width:50%" >Empresa: <span id="participante_empresa_2"></span></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width:50%" >Nome: <span id="participante_nome_3"></span></td>
+                                                <td style="width:50%" >Empresa: <span id="participante_empresa_3"></span></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width:50%" >Nome: <span id="participante_nome_4"></span></td>
+                                                <td style="width:50%" >Empresa: <span id="participante_empresa_4"></span></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width:50%" >Nome: <span id="participante_nome_5"></span></td>
+                                                <td style="width:50%" >Empresa: <span id="participante_empresa_5"></span></td>
+                                            </tr>
+                                        </table>
                                         </p>
                                     </td>
                                 </tr>
@@ -107,8 +186,6 @@
         </table>
     </div>
 </div>
-<h1 style="text-align:center;">CHECK LIST<br>ENTREGA TÉCNICA</h1>
-
 <div class="section">
 
 
@@ -210,6 +287,66 @@ Nome — Empresa
 <h3>Observações</h3>
 <h3>Foto Padrão</h3>
 </div>
+<script>
 
+    async function getdata(task) {
+        var url = `https://trlvvv52244il555u3yfuqampe0lulvd.lambda-url.us-east-1.on.aws/?pedido=${task}`;
+
+        // let response = await fetch(url);
+        // let userData = await response.json();
+        // console.log(userData);
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            crossDomain: true,
+            contentType: 'application/json',
+            success: function (response) {
+                if (response) {
+                    setData(response);
+                }
+                return response;
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                return { 'erro': 'falha ao carregar pedido, tente novamente' };
+            }
+        });
+    }
+    function setData(data) {
+        //Capa
+        $('#pedido').text(data.pedido);
+        $('#vendedor').text(data.cabecalho.vendedor);
+        $('#categoriaVendas').text(data.cabecalho.categoriaVendas);
+        $('#integradora').text(data.cabecalho.integradora);
+        $('#projeto').text(data.cabecalho.projeto);
+        //Dados do Cliente
+        $('#cliente').text(data.dadosCliente.cliente);
+        $('#endereco').text(data.dadosCliente.endereco);
+        $('#municipio').text(data.dadosCliente.municipio);
+        $('#cep').text(data.dadosCliente.cep);
+        $('#uf').text(data.dadosCliente.uf);
+        $('#cpf').text(data.dadosCliente.cpf);
+        $('#ie').text(data.dadosCliente.ie);
+        $('#contato').text(data.dadosCliente.contato);
+        $('#telefone').text(data.dadosCliente.telefone);
+        $('#celular').text(data.dadosCliente.celular);
+        //Participantes
+        for (let index = 1; index <= data.participantes.length; index++) {
+            let idNome = `#participante_nome_${index}`;
+            let idEmpresa = `#participante_empresa_${index}`;
+            $(idNome).text(data.participantes[index].Nome);
+            $(idEmpresa).text(data.participantes[index].Empresa);
+        }
+
+    }
+    $(document).ready(function () {
+        let params = new URLSearchParams(document.location.search);
+        let pedido = params.get("pedido");
+        if (pedido) {
+            let data = getdata(pedido);
+        } else {
+            alert('Pedido Obrigatório');
+        }
+    });</script>
 </body>
 </html>
