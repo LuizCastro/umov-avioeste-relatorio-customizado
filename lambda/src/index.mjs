@@ -122,6 +122,7 @@ async function getParticipantes(schema, client, pedido) {
     let rows = res.rows;
     for (const row of rows) {
         var index = row.campo.substr(row.campo.length - 1);
+        index = index - 1;
         if (row.campo.includes('nome') && row.valor) {
             result[index].Nome = row.valor;
         } else if (row.campo.includes('empresa') && row.valor) {
@@ -130,7 +131,7 @@ async function getParticipantes(schema, client, pedido) {
             result[index].Assinatura = row.valor;
         }
     }
-    return result;
+    return result.filter(item => item.Nome !== '');
 }
 
 async function getInformacoesPreliminares(schema, client, pedido) {
@@ -151,13 +152,24 @@ async function getInformacoesPreliminares(schema, client, pedido) {
     where activity.act_integrationid = 'entrega_tecnica'
     and activitysection.acs_description ilike '%preliminares%'
     and activityfield.acf_active = '1'
+    and activityfield.acf_fieldtype <> 'E'
     order by activityfield.acf_displayorder`;
     const res = await client.query(sql);
     let camposRows = res.rows;
     if (!camposRows || camposRows.length === 0) return {};
     const camposMap = {};
+    camposMap['fotos'] = [];
     (camposRows || []).forEach(c => {
-        camposMap[c.campo] = c.valor;
+        let index = c.campo;
+        if (index) {
+            if (index.includes('foto_padrao')) {
+                if (c.valor) {
+                    camposMap['fotos'].push(c.valor);
+                }
+            } else {
+                camposMap[index] = c.valor;
+            }
+        }
     });
     return camposMap;
 
@@ -165,7 +177,7 @@ async function getInformacoesPreliminares(schema, client, pedido) {
 
 async function getSecao(schema, client, pedido) {
     // Busca atividades principais
-    let sql = `
+    let sql = `select * from (
     select activitysection.acs_displayorder secao_ordem , activitysection.acs_description secao_nome,activitysection.acs_integrationid secao_id, activityfield.acf_displayorder ordem, acf_integrationid campo, acf_description descricao,
             (select historyvalue.htv_externalvalue
             from  ${schema}.history
@@ -184,29 +196,41 @@ async function getSecao(schema, client, pedido) {
     and COALESCE(activitysection.acs_integrationid, '') not in ('participantes', 'informacoes_preliminares', 'informacoes_gerais', 'finalizar_entrega_tecnica', '')
     and COALESCE(acf_integrationid, '') not in ('')
     and activityfield.acf_active = '1'
-    order by activitysection.acs_displayorder, activityfield.acf_displayorder`;
+    and activityfield.acf_fieldtype <> 'E'
+    order by activitysection.acs_displayorder, activityfield.acf_displayorder
+) A where COALESCE(A.valor,'') <> '' `;
     const res = await client.query(sql);
     let atividades = res.rows;
 
     if (!atividades || atividades.length === 0) return {};
 
-    let result = {};
+    const result = {};
     for (const atv of atividades) {
         let index = atv.secao_id;
-        if (result[index] == undefined) {
-            result[index] = {
+        if (!(index in result)) {
+            const newSecao = {
                 ordem: atv.secao_ordem,
                 id: atv.secao_id,
                 descricao: atv.secao_nome,
+                observacao: '',
                 itens: [],
+                fotos: [],
             };
+            result[index] = newSecao;
         }
-        result[index].itens.push({
-            ordem: atv.ordem,
-            campo: atv.campo,
-            descricao: atv.descricao,
-            valor: atv.valor
-        });
+        if (atv.campo.includes('foto_padrao')) {
+            result[index].fotos.push(atv.valor);
+        } else if (atv.campo.includes('observacoes_produto')) {
+            result[index].observacao = atv.valor;
+        } else {
+            result[index].itens.push({
+                ordem: atv.ordem,
+                campo: atv.campo,
+                descricao: atv.descricao,
+                valor: atv.valor
+            });
+        }
+
     }
     return result;
 }

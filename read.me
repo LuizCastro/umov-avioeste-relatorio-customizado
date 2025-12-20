@@ -1,9 +1,0 @@
-// entre na pasta lambda
-sam build
-sam local invoke "AvioesteRelatioWeb" -e event.json
-
-//Chamar o relatorio
-sam local start-api
-
-// rodar html local para validar
-python -m http.server 5500
