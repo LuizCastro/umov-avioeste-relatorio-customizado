@@ -1,0 +1,366 @@
+@media screen {
+  html,
+  body {
+    font-family: Montserrat, "Open Sans", Helvetica, Arial, sans-serif !important;
+  }
+  hr {
+    height: 1px !important;
+    background-color: #f57914 !important;
+    border: none !important;
+    border-top: none !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  body {
+    background-color: #f3f3f3 !important;
+    font-size: 18px !important;
+    width: 100% !important;
+    font-family: "Montserrat", sans-serif;
+    margin: 0;
+  }
+
+  .navbar {
+    overflow: hidden;
+    background-color: #333;
+    position: fixed;
+    width: 100%;
+  }
+
+  .navbar a {
+    float: none;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 20px;
+  }
+
+  .navbar a:hover {
+    background: #f1f1f1;
+    color: black;
+  }
+
+  .navbar a.active {
+    background-color: #f57914;
+    color: white;
+  }
+  .page-capa {
+    width: 19.05cm;
+    height: 26.7cm;
+    margin: 0;
+    background: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  .page {
+    width: 19.05cm;
+    height: 26.7cm;
+    margin: 10px auto;
+    background: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+    /* background-color: #f3f3f3;
+    margin: auto;
+    padding: 10px 40px !important;
+    max-width: 1440px; */
+  }
+
+  div.centerOnPrintedPage {
+    width: 100%;
+    background-color: #fff;
+  }
+  .page-report-A4 {
+    width: 19.05cm;
+    height: 26.7cm;
+    background-color: #fff;
+    margin: 0 auto;
+    padding: 20px;
+    max-width: 100%;
+  }
+  .page-report-head {
+    width: 100% !important;
+    margin: 0 auto !important;
+    padding: 20px !important;
+  }
+  .page-report-footer {
+    font-size: 11px !important;
+    padding: 20px !important;
+    width: 100% !important;
+    margin: 0 auto !important;
+  }
+  .page-report-content {
+    font-size: 12px !important;
+    padding: 0 10px 0 10px;
+    margin: 0 auto !important;
+    width: 100% !important;
+    /* Adjust the width as needed */
+    /* Adjust the height as needed*/
+    box-sizing: border-box !important;
+    background-color: #fff !important;
+  }
+  .pagebreak-before {
+    width: 100%;
+    background-color: #f3f3f3;
+  }
+  .pagebreak-after {
+    width: 100%;
+    background-color: #f3f3f3;
+  }
+  table,
+  tr,
+  td {
+    border-spacing: 0px; /* 10px space between all cells (rows and columns) */
+  }
+
+  .titulo-atividade {
+    font-size: 14px !important;
+    margin-left: 20px !important;
+    font-weight: 800 !important;
+  }
+  .atividade {
+    vertical-align: top;
+  }
+
+  .atividade-img,
+  .atividade-img-croqui {
+    width: 98% !important;
+    height: 400px !important;
+    overflow: hidden !important;
+    margin: 0 auto !important;
+    background-position: center !important;
+    background-size: auto 100% !important;
+    background-repeat: no-repeat !important;
+    border: none !important;
+  }
+  .logo {
+    width: 120px !important;
+  }
+  .capa-logo {
+    padding-top: 100px;
+    width: 400px;
+  }
+  .capa-cliente {
+    width: 100%;
+    padding: 0px !important;
+    text-align: center;
+  }
+  .capa-fs-18 {
+    font-size: 18px !important;
+  }
+
+  .capa_silver {
+    color: silver !important;
+  }
+
+  .capa-background {
+    background-color: #f57914;
+    color: #fff !important;
+  }
+
+  .capa-background-black {
+    background-color: black !important;
+    color: #fff !important;
+  }
+
+  .capa-fs-20 {
+    font-size: 20px !important;
+  }
+  .marcador {
+    border-left: 5px solid #f57914 !important;
+  }
+
+  .border-rounded {
+    border: 2px solid black;
+    border-radius: 20px;
+    padding: 5px 20px;
+  }
+  .border-none {
+    border: none !important;
+  }
+  .fs-12 {
+    font-size: 12px !important;
+  }
+  .fs-14 {
+    font-size: 14px !important;
+  }
+  .fs-16 {
+    font-size: 16px !important;
+  }
+  .fs-18 {
+    font-size: 18px !important;
+  }
+  .fs-20 {
+    font-size: 20px !important;
+  }
+  .fs-30 {
+    font-size: 30px !important;
+  }
+  .fs-35 {
+    font-size: 35px !important;
+  }
+  .fs-40 {
+    font-size: 40px !important;
+  }
+  .fs-45 {
+    font-size: 45px !important;
+  }
+  .fs-50 {
+    font-size: 50px !important;
+  }
+
+  .fb {
+    font-weight: bold;
+  }
+  .fb-100 {
+    font-weight: 100;
+  }
+  .fb-200 {
+    font-weight: 200;
+  }
+  .fb-300 {
+    font-weight: 300;
+  }
+  .fb-400 {
+    font-weight: 400;
+  }
+  .fb-500 {
+    font-weight: 500;
+  }
+  .fb-600 {
+    font-weight: 600;
+  }
+  .fb-700 {
+    font-weight: 700;
+  }
+  .fb-800 {
+    font-weight: 800;
+  }
+  .fb-900 {
+    font-weight: 900;
+  }
+
+  .pl-30 {
+    padding-left: 30px !important;
+  }
+  .pl-20 {
+    padding-left: 20px !important;
+  }
+  .pl-10 {
+    padding-left: 10px !important;
+  }
+  .p-top-250 {
+    padding-top: 250px;
+  }
+  .p-bottom-250 {
+    padding-bottom: 250px;
+  }
+  .p-bottom-20 {
+    padding-bottom: 20px;
+  }
+  .pd-10 {
+    padding: 10px !important;
+  }
+  .plr-10 {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+  .plr-20 {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+  .pdt-10 {
+    padding-top: 10px !important;
+  }
+  .pdt-20 {
+    padding-top: 20px !important;
+  }
+
+  .form-row {
+    display: flex; /* Aligns children in a row */
+    width: 100%; /* Ensures the row takes full width */
+    align-items: baseline; /* Aligns text and underline properly */
+  }
+
+  .label {
+    /* Optional: Add some margin if desired */
+    margin-right: 5px;
+  }
+
+  .underline-space {
+    flex-grow: 1; /* This makes the span fill the remaining space */
+    border-bottom: 1px solid black; /* This creates the continuous line */
+    /* Optional: Adjust vertical spacing with padding/margin as needed */
+    margin-bottom: 3px;
+  }
+  .separador {
+    height: 10px;
+    width: 100%;
+    background-color: #f3f3f3;
+  }
+  .bg-capa-bottom {
+    width: 100%;
+    height: auto;
+    border: 0 !important;
+  }
+  img.bg-capa-bottom {
+    border: 0 !important;
+  }
+  .m-t-0 {
+    margin-top: 0px !important;
+  }
+  .m-b-0 {
+    margin-bottom: 0px !important;
+  }
+  .equalDivide {
+    width: 50%;
+  }
+  .text-left {
+    text-align: left;
+  }
+  #loading-spinner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #fff; /* White background overlay */
+    z-index: 9999; /* Ensure it's on top of everything */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .loader {
+    border: 16px solid #f3f3f3; /* Light grey border */
+    border-top: 16px solid #f57914; /* Blue top border (the spinning part) */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+  }
+  .fotopadrao > table {
+    border: 2px solid black;
+    border-radius: 20px;
+    border-collapse: separate;
+    -moz-border-radius: 6px;
+  }
+
+  .fotopadrao > td {
+    border-left: solid black 2px;
+    border-top: solid black 2px;
+  }
+  .fotopadrao > td:first-child,
+  .fotopadrao > th:first-child {
+    border-left: none;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+}
