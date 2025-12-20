@@ -1,6 +1,10 @@
 @media print {
+  html,
+  body {
+    font-family: Montserrat, "Open Sans", Helvetica, Arial, sans-serif !important;
+  }
   @page {
-    size: A4 landscape;
+    size: A4;
     background-color: #fff;
     max-width: 100%;
     max-height: 100%;
@@ -23,10 +27,9 @@
   }
   @page :blank {
     /* Paginas em Branco*/
-    /* @top-center {
-            content: "This page is intentionally left blank.";
-        }
-        */
+    @top-center {
+      content: "This page is intentionally left blank.";
+    }
   }
 
   hr {
@@ -41,7 +44,7 @@
   body {
     font-size: 18px !important;
     width: 100% !important;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: "Montserrat", sans-serif;
     color: #000;
   }
   .page {
@@ -68,13 +71,17 @@
     height: auto !important;
   }
   .page-report-footer {
+    font-size: 11px !important;
+    padding: 20px !important;
     width: 100% !important;
+    margin: 0 auto !important;
     page-break-before: avoid !important;
     page-break-after: avoid !important;
     page-break-inside: avoid !important;
   }
 
   .page-report-content {
+    font-size: 12px !important;
     margin: 0 auto !important;
     width: 100% !important;
     /* Adjust the width as needed */
@@ -85,7 +92,10 @@
   }
 
   .titulo-atividade {
-    font-size: 20px !important;
+    font-size: 14px !important;
+    margin-left: 20px !important;
+    margin-top: 20px !important;
+    font-weight: 800 !important;
   }
   .atividade {
     align-content: start !important;
@@ -113,8 +123,7 @@
   }
 
   .logo {
-    width: 155px !important;
-    padding-right: 10px !important;
+    width: 120px !important;
   }
   .marcador {
     border-left: 4px solid #f57914 !important;
@@ -122,12 +131,14 @@
   .border-rounded {
     border: 2px solid black;
     border-radius: 20px;
-    padding: 20px;
+    padding: 5px 20px;
   }
   .border-none {
     border: none !important;
   }
-
+  .fs-12 {
+    font-size: 12px !important;
+  }
   .fs-14 {
     font-size: 14px !important;
   }
@@ -159,8 +170,35 @@
   .fb {
     font-weight: bold !important;
   }
+  .fb {
+    font-weight: bold;
+  }
+  .fb-100 {
+    font-weight: 100;
+  }
+  .fb-200 {
+    font-weight: 200;
+  }
+  .fb-300 {
+    font-weight: 300;
+  }
+  .fb-400 {
+    font-weight: 400;
+  }
+  .fb-500 {
+    font-weight: 500;
+  }
+  .fb-600 {
+    font-weight: 600;
+  }
+  .fb-700 {
+    font-weight: 700;
+  }
   .fb-800 {
     font-weight: 800;
+  }
+  .fb-900 {
+    font-weight: 900;
   }
 
   .capa-logo {
@@ -212,7 +250,38 @@
     padding-bottom: 20px;
   }
   .pd-10 {
-    padding: 30px !important;
+    padding: 10px !important;
+  }
+  .plr-10 {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+  .plr-20 {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+  .pdt-10 {
+    padding-top: 10px !important;
+  }
+  .pdt-20 {
+    padding-top: 20px !important;
+  }
+  .form-row {
+    display: flex; /* Aligns children in a row */
+    width: 100%; /* Ensures the row takes full width */
+    align-items: baseline; /* Aligns text and underline properly */
+  }
+
+  .label {
+    /* Optional: Add some margin if desired */
+    margin-right: 5px;
+  }
+
+  .underline-space {
+    flex-grow: 1; /* This makes the span fill the remaining space */
+    border-bottom: 1px solid black; /* This creates the continuous line */
+    /* Optional: Adjust vertical spacing with padding/margin as needed */
+    margin-bottom: 3px;
   }
   .separador {
     height: 10px;
@@ -283,6 +352,21 @@
   }
   .p-bottom-250 {
     padding-bottom: 0px;
+  }
+  .fotopadrao > table {
+    border: 2px solid black;
+    border-radius: 20px;
+    border-collapse: separate;
+    -moz-border-radius: 6px;
+  }
+
+  .fotopadrao > td {
+    border-left: solid black 2px;
+    border-top: solid black 2px;
+  }
+  .fotopadrao > td:first-child,
+  .fotopadrao > th:first-child {
+    border-left: none;
   }
 }
 @media print and (color) {

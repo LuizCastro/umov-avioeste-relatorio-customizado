@@ -1,0 +1,34 @@
+@media print {
+  @page {
+    size: A4;
+    margin: 1.5cm;
+  }
+
+  body {
+    font-size: 12pt;
+    font-family: "Montserrat";
+  }
+  .pagina {
+    width: 19.05cm; /* 210mm - 2x15mm margem */
+    height: 26.7cm; /* 297mm - 2x15mm margem */
+    page-break-after: always;
+    background: white;
+    box-shadow: none;
+    margin: 0;
+    padding: 1cm;
+  }
+
+  .pagina:last-child {
+    page-break-after: avoid;
+  }
+}
+
+@media screen {
+  .pagina {
+    width: 19.05cm;
+    height: 26.7cm;
+    margin: 10px auto;
+    background: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+}
