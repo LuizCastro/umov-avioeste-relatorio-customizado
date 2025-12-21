@@ -69,12 +69,14 @@
   .page-report-head {
     width: 100% !important;
     height: auto !important;
+    flex: 0 0 auto;
   }
   .page-report-footer {
     font-size: 11px !important;
     padding: 20px !important;
     width: 100% !important;
     margin: 0 auto !important;
+    flex: 0 0 auto;
     page-break-before: avoid !important;
     page-break-after: avoid !important;
     page-break-inside: avoid !important;
@@ -88,9 +90,20 @@
     /* Adjust the height as needed*/
     padding: 20px !important;
     box-sizing: border-box !important;
+    flex: 1 1 auto;
     /* page-break-inside: avoid; */
   }
-
+  .page-header {
+    flex: 0 0 auto;
+  }
+  .page-content {
+    flex: 1 1 auto;
+  }
+  .page-footer {
+    flex: 0 0 auto;
+    bottom: 0;
+    width: 100%;
+  }
   .titulo-atividade {
     font-size: 14px !important;
     margin-left: 20px !important;

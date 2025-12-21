@@ -78,14 +78,25 @@
     padding: 20px;
     max-width: 100%;
   }
-  .page-report-head {
+  .page-report-header {
     width: 100% !important;
     margin: 0 auto !important;
-    padding: 20px !important;
+    padding: 25px !important;
+  }
+  .page-header {
+    flex: 0 0 auto;
+  }
+  .page-content {
+    flex: 1 1 auto;
+  }
+  .page-footer {
+    flex: 0 0 auto;
+    bottom: 0;
+    width: 100%;
   }
   .page-report-footer {
     font-size: 11px !important;
-    padding: 20px !important;
+    padding: 25px !important;
     width: 100% !important;
     margin: 0 auto !important;
   }
@@ -116,6 +127,7 @@
   .titulo-atividade {
     font-size: 14px !important;
     margin-left: 20px !important;
+    margin-top: 20px !important;
     font-weight: 800 !important;
   }
   .atividade {

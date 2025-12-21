@@ -86,7 +86,7 @@ function setNoData(task, message) {
     `;
 }
 function setData(data) {
-    loading();
+    //loading();
     addCabecalho(data.pedido, data.cabecalho);
     addDadosCliente(data.dadosCliente);
     addParticipantes(data.participantes);
@@ -95,23 +95,23 @@ function setData(data) {
     addFotoPadrao(data.informacoesPreliminares);
     addSecao(data.secoes);
     addAssinaturas(data.participantes);
-    // loading();
-    // formataA4();
+    formataA4();
+    loading();
 }
 function getHeader() {
     return `
-    <tr class="page-report-footer">
-        <td class="plr-20">
-            <table width="100%" class="border-rounded" cellpadding="0" cellspacing="0">
+    <tr class="page-report-head">
+        <th>
+            <table width="99%" class="border-rounded" cellpadding="0" cellspacing="0">
                 <tbody class="border-none">
                     <tr class="border-none">
-                        <td style="width:50%;" class="border-none" align="left">(49) 3664-8000</td>
-                        <td style="width:50%;" class="border-none" align="left">ROD. BR KM 102,3 - LINHA HUMAITÁ -
-                            INDUSTRIAL<br>CEP 89890-000 Cunha Porã / SC</td>
+                        <td class="border-none" width="70%" align="left" class="fb-600 fs-20">CHECK LIST<BR><span
+                                class="fb-800 fs-20">ENTREGA TÉCNICA</td>
+                        <td class="border-none" width="30%" align="right"><img class="logo" src="img/logo.png"></td>
                     </tr>
                 </tbody>
             </table>
-        </td>
+        </th>
     </tr>`;
 }
 
@@ -140,9 +140,9 @@ function addAssinaturas(data) {
     for (let index = 1; index <= data.length; index++) {
         let participante = data[index - 1];
         _tds += `<td align="center" style="width:50%;">
-            <img src="${participante.Assinatura}" width="95%" height="auto">
-            <label>Nome:  ${participante.Nome}</label>
-            <label>Empresa:  ${participante.Nome}</label>
+                    <img src="${participante.Assinatura}" width="95%" height="auto">
+                    <br><span class="label">Nome: ${participante.Nome} </span>
+                    <br><span class="label">Empresa: ${participante.Empresa} </span>
         </td>`;
         if (index % 2 == 0 || index >= data.length) {
             _tr += `<tr>${_tds}</tr>`;
@@ -183,10 +183,8 @@ function addSecao(secoes) {
             if (!(linha in _tr_tds)) {
                 _tr_tds[linha] = [];
             }
-            if ((strinSize > 45) && linha > 0) {
+            if ((strinSize > 50) && linha > 0) {
                 linha++;
-            }
-            if (!(linha in _tr_tds)) {
                 _tr_tds[linha] = [];
             }
             _tr_tds[linha].push({
@@ -195,14 +193,21 @@ function addSecao(secoes) {
                         <span class="label">${item.descricao}: </span>
                         <span class="underline-space" id="${item.campo}">${item.valor}</span>
                     </div>`});
-            if (_tr_tds[linha].length > 1) { linha++; }
+            if (_tr_tds[linha].length > 1) {
+                linha++;
+            }
         });
         _tr_tds.forEach(linha => {
             _trtd = '';
             per = 100 / linha.length;
             colspan = linha.length == 1 ? 2 : 1;
             linha.forEach(td => {
-                _trtd += `<td colspan="${colspan}" style="witdh:${per}%">${linha[0].div}</td>`;
+
+                if (td.tamanho > 50) {
+                    _tr += `<tr><td colspan="2" data-size="${td.tamanho}" style="width:100%"> ${td.div}</td></tr>`;
+                } else {
+                    _trtd += `<td colspan="${colspan}" data-size="${td.tamanho}" style="width:${per}%"> ${td.div}</td>`;
+                }
             });
             _tr += `<tr>${_trtd}</tr>`;
         });
@@ -601,17 +606,101 @@ function addFotoPadrao(data) {
 
     }
 }
+function esperarImagens(container) {
+    const imgs = container.querySelectorAll('img');
 
-const formataA4 = () => {
+    return Promise.all(
+        [...imgs].map(img => {
+            if (img.complete) return Promise.resolve();
+            return new Promise(resolve => {
+                img.onload = img.onerror = resolve;
+            });
+        })
+    );
+}
+
+async function formataA4() {
     let headerContentHTML = getHeader();
     let footerContentHTML = getFooter();
 
-    const container = document.getElementById('content-page');
-    const page_container = document.getElementById('page-content-page');
-    const alturaA4 = 1000; // 26.7cm em pixels (ajustado para conteúdo)
+    const origem = document.getElementById('content-page');
+    const destino = document.body;
 
-    function criarPagina(numeropagina, conteudoHTML) {
-        return `
+    const alturaA4 = 1000; // 26.7cm em pixels (ajustado para conteúdo)
+    const margemHeader = 105; // reserva header + footer
+    const margemFooter = 45; // reserva header + footer
+    const alturaUtil = alturaA4 - (margemHeader + margemFooter);
+
+    await esperarImagens(origem);
+
+    const elementos = Array.from(origem.children);
+
+    let paginas = [];
+
+    const temp = document.createElement('div');
+    temp.style.position = 'absolute';
+    temp.style.top = '0';
+    temp.style.left = '0';
+    // temp.style.width = '210mm';      // 👈 FUNDAMENTAL
+    temp.style.boxSizing = 'border-box';
+    temp.style.padding = '20mm';
+    temp.style.overflow = 'hidden';
+    temp.style.height = alturaUtil + 'px';
+    // temp.style.visibility = 'hidden';
+    temp.style.width = origem.offsetWidth + 'px';
+
+    document.body.appendChild(temp);
+
+
+
+    let paginaAtual = [];
+    let numeroPagina = 1;
+    let safety = 0;
+    const MAX = 300;
+
+    while (elementos.length > 0) {
+        if (++safety > MAX) {
+            console.error('Loop interrompido por segurança');
+            break;
+        }
+        const el = elementos.shift(); // REMOVE da fila → progresso garantido
+        temp.appendChild(el.cloneNode(true));
+
+        if (temp.scrollHeight > temp.clientHeight) {
+            // remove o último que estourou
+            temp.removeChild(temp.lastElementChild);
+
+            // salva página cheia
+            paginas.push(criarPagina(numeroPagina++, headerContentHTML, temp.innerHTML, footerContentHTML));
+
+            // limpa e começa nova página
+            temp.innerHTML = '';
+            temp.appendChild(el.cloneNode(true));
+        }
+    }
+
+    // última página
+    if (temp.innerHTML.trim()) {
+        paginas.push(criarPagina(numeroPagina, headerContentHTML, temp.innerHTML, footerContentHTML));
+    }
+
+    document.body.removeChild(temp);
+
+    document.getElementById('page-content-page').remove();
+    // renderiza Body
+    destino.innerHTML += paginas.join('');
+    // document.body.innerHTML += paginas.join('');
+
+    // origem Remove
+    /* 
+    
+    */
+    // document.getElementById('content-page')
+    // origem.remove();
+    paginas = undefined;
+}
+function criarPagina(numeropagina, headerContentHTML, conteudoHTML, footerContentHTML) {
+    return `
         <div class="pagebreak-before">
             <div class="page" >
                 <table border=0 class="page-report-A4" id="page-${numeropagina}" width="100%">
@@ -621,54 +710,4 @@ const formataA4 = () => {
                 </table>
             </div>
         </div>`;
-    }
-
-    // Divide conteúdo por altura A4
-    function dividirEmPaginas(conteudoCompleto) {
-        const tempDiv = document.createElement('div');
-        tempDiv.style.height = (alturaA4 - 200) + 'px';
-        tempDiv.style.overflow = 'hidden';
-        tempDiv.style.position = 'absolute';
-        tempDiv.style.visibility = 'hidden';
-        document.body.appendChild(tempDiv);
-
-        let paginas = [];
-        let restante = conteudoCompleto;
-
-        while (restante.trim()) {
-            tempDiv.innerHTML = restante;
-            let paginaHTML = '';
-
-            // Remove elementos até caber
-            while (tempDiv.scrollHeight > tempDiv.clientHeight && tempDiv.children.length > 0) {
-                const ultimo = tempDiv.lastElementChild;
-                paginaHTML = ultimo.outerHTML + paginaHTML;
-                ultimo.remove();
-            }
-
-            if (tempDiv.innerHTML.trim()) {
-                paginaHTML = tempDiv.innerHTML + paginaHTML;
-            }
-
-            if (paginaHTML.trim()) {
-                numeropagina = paginas.length + 1;
-                paginas.push(criarPagina(numeropagina, paginaHTML));
-            }
-
-            restante = conteudoCompleto.replace(paginaHTML, '');
-            conteudoCompleto = restante;
-        }
-
-        document.body.removeChild(tempDiv);
-        return paginas;
-    }
-
-    // Renderiza todas as páginas
-    const paginas = dividirEmPaginas(container.innerHTML);
-    page_container.remove();
-    document.body.innerHTML += paginas.join('');
-    paginas = undefined;
 }
-
-
-
