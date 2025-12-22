@@ -10,13 +10,13 @@ async function getdata(task) {
         crossDomain: true,
         contentType: 'application/json',
         success: function (response) {
-            if (response.error || response.cabecalho == {}) {
+            if (response.error || response.cabecalho == {} || response.cabecalho.vendedor == undefined) {
                 setNoData(task, 'falha ao carregar pedido, verifique o numero e tente novamente');
             }
+
             setData(response);
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            loading();
             setNoData(task, 'falha ao carregar pedido, tente novamente');
         }
     });
@@ -75,17 +75,26 @@ const formatCPFCNPF = (value) => {
 };
 
 function loading() {
-    const spinner = document.getElementById('loading-spinner');
-    spinner.style.display = spinner.style.display == 'flex' ? 'none' : 'flex';
+    showLoader();
+    // const spinner = document.getElementById('loading-spinner');
+    // spinner.style.display = spinner.style.display == 'flex' ? 'none' : 'flex';
 }
 
 function setNoData(task, message) {
+    hideLoader();
     document.getElementById('body').innerHTML = `
-    <div class="alert alert warning">Pedido :${task} não encontrado , ${message} </div>;
-    `;
+    <div id="loading-spinner-2">
+        <div>
+            <img src="https://avioeste.com.br/files/1466737/24db8bc7a776d5e833638f581f3facb5" width="250px">
+            <br>
+            <br>
+        </div>
+        <div class="error-message">Pedido :${task} não encontrado , ${message}</div>
+    </div>`;
 }
 async function setData(data) {
     //loading();
+
     addCabecalho(data.pedido, data.cabecalho);
     addDadosCliente(data.dadosCliente);
     addParticipantes(data.participantes);
@@ -96,7 +105,7 @@ async function setData(data) {
     addAssinaturas(data.participantes);
     await formataA4();
     document.getElementById('btprint').style.display = 'block';
-    loading();
+    hideLoader();
 }
 function getHeader() {
     return `
@@ -755,4 +764,33 @@ function criarPagina(numeropagina, headerContentHTML, conteudoHTML, footerConten
                 <footer><table width="100%">${footerContentHTML}</table></footer>
             </div>    
         </div>`;
+}
+
+let morphInterval = null;
+let index = 0;
+
+function showLoader() {
+    const loader = document.getElementById('loading-spinner-2');
+    const icons = loader.querySelectorAll('.icon-loader');
+
+    loader.classList.remove('hide');
+    loader.style.display = 'flex';
+
+    if (morphInterval) return;
+
+    morphInterval = setInterval(() => {
+        icons[index].classList.remove('active');
+        index = (index + 1) % icons.length;
+        icons[index].classList.add('active');
+    }, 1000);
+}
+
+function hideLoader() {
+    const loader = document.getElementById('loading-spinner-2');
+    loader.classList.add('hide');
+    setTimeout(() => {
+        loader.style.display = 'none';
+        clearInterval(morphInterval);
+        morphInterval = null;
+    }, 400);
 }
