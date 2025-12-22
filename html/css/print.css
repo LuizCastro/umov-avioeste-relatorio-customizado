@@ -1,108 +1,117 @@
+@page {
+  size: A4;
+  margin-top: 0mm;
+  margin-bottom: 0mm;
+  margin-left: 0mm;
+  margin-right: 0mm;
+}
+
+/* =========================
+   RESET PRINT
+========================= */
 @media print {
   html,
   body {
-    font-family: Montserrat, "Open Sans", Helvetica, Arial, sans-serif !important;
-  }
-  @page {
-    size: A4;
-    background-color: #fff;
-    max-width: 100%;
-    max-height: 100%;
-  }
-  .no-print {
-    display: none !important;
-  }
-  @page :left {
-    /* Pagina a Esquerda */
-    /* margin-left: 3cm; */
-  }
-
-  @page :right {
-    /* Pagina a Direita */
-    /* //margin-left: 4cm; */
-  }
-
-  @page :first {
-    /* Primeira Pagina */
-  }
-  @page :blank {
-    /* Paginas em Branco*/
-    @top-center {
-      content: "This page is intentionally left blank.";
-    }
-  }
-
-  hr {
-    height: 1px !important;
-    background-color: #f57914 !important;
-    border: none !important;
-    border-top: none !important;
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
+    margin: 0;
+    padding: 0;
+    height: auto;
+    background: white;
+    font-family: "Montserrat", sans-serif !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 
   body {
-    font-size: 18px !important;
-    width: 100% !important;
+    overflow: visible !important;
     font-family: "Montserrat", sans-serif;
+    font-size: 14px !important;
+    width: 100% !important;
     color: #000;
   }
-  .page {
-    size: A4 portrait;
-    background-color: #fff;
-    max-width: 100%;
-    max-height: 100%;
-  }
 
-  .pagebreak-before {
-    page-break-before: always !important;
-  }
-  .pagebreak-after {
-    page-break-after: always !important;
-  }
-
-  .page-report-A4 {
-    width: 100% !important;
-    height: auto !important;
-  }
-
-  .page-report-head {
-    width: 100% !important;
-    height: auto !important;
-    flex: 0 0 auto;
-  }
-  .page-report-footer {
-    font-size: 11px !important;
-    padding: 20px !important;
-    width: 100% !important;
-    margin: 0 auto !important;
-    flex: 0 0 auto;
-    page-break-before: avoid !important;
-    page-break-after: avoid !important;
-    page-break-inside: avoid !important;
-  }
-
-  .page-report-content {
-    font-size: 12px !important;
-    margin: 0 auto !important;
-    width: 100% !important;
-    /* Adjust the width as needed */
-    /* Adjust the height as needed*/
-    padding: 20px !important;
-    box-sizing: border-box !important;
-    flex: 1 1 auto;
-    /* page-break-inside: avoid; */
-  }
-  .page-header {
-    flex: 0 0 auto;
-  }
-  .page-content {
-    flex: 1 1 auto;
-  }
-  .page-footer {
-    flex: 0 0 auto;
-    bottom: 0;
+  /* =========================
+       CONTAINER GERAL
+    ========================= */
+  .report {
     width: 100%;
+  }
+
+  .page {
+    width: 210mm;
+    height: 290mm;
+    margin: 10px auto !important;
+    page-break-before: always;
+    break-before: page;
+    background-color: white;
+  }
+
+  /* =========================
+       HEADER E FOOTER
+    ========================= */
+  header {
+    position: static;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+    padding: 1px;
+    box-sizing: border-box;
+  }
+
+  /* =========================
+   ÁREA ÚTIL DA PÁGINA
+========================= */
+
+  .page-inner {
+    position: relative;
+    height: 100%;
+    padding: 5px;
+  }
+  footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+  }
+
+  /* =========================
+       CONTEÚDO
+    ========================= */
+  .content {
+    page-break-inside: auto;
+  }
+
+  /* =========================
+       QUEBRA DE PÁGINA
+    ========================= */
+  .page-break {
+    page-break-before: always;
+    break-before: page;
+  }
+
+  /* =========================
+       EVITAR QUEBRAS FEIAS
+    ========================= */
+  table,
+  tr,
+  td,
+  th {
+    page-break-inside: avoid;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+    page-break-inside: avoid;
+    display: block;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    page-break-after: avoid;
   }
   .titulo-atividade {
     font-size: 14px !important;
@@ -110,31 +119,6 @@
     margin-top: 20px !important;
     font-weight: 800 !important;
   }
-  .atividade {
-    align-content: start !important;
-  }
-
-  .atividade-img {
-    width: 100% !important;
-    height: 400px !important;
-    max-height: 100% !important;
-    overflow: hidden !important;
-    margin: 0 auto !important;
-    background-position: center !important;
-    background-size: auto 100% !important;
-    background-repeat: no-repeat !important;
-  }
-  .atividade-img-croqui {
-    width: 100%;
-    height: 470px;
-    max-height: 100%;
-    overflow: hidden !important;
-    margin: 0 auto !important;
-    background-position: center !important;
-    background-size: auto 100% !important;
-    background-repeat: no-repeat !important;
-  }
-
   .logo {
     width: 120px !important;
   }
@@ -145,6 +129,7 @@
     border: 2px solid black;
     border-radius: 20px;
     padding: 5px 20px;
+    margin: 0 auto;
   }
   .border-none {
     border: none !important;
@@ -226,6 +211,14 @@
   .capa-fs-18 {
     font-size: 18px !important;
   }
+  .page_capa {
+    size: A4;
+    width: 210mm;
+    height: 297mm;
+    margin: 0 auto;
+    break-before: page;
+    background-color: white;
+  }
 
   .capa_silver {
     color: silver !important;
@@ -302,13 +295,16 @@
     background-color: #f3f3f3;
   }
   .bg-capa-bottom {
-    width: 100%;
+    position: absolute;
+    margin: 0 auto;
+    width: 209mm;
+    height: auto;
     border: none !important;
-    height: 400px;
     background-image: url("img/capa_footer.png");
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
+    padding-top: 100px;
   }
   .m-t-0 {
     margin-top: 0px !important;
@@ -326,40 +322,6 @@
   img {
     max-width: 100% !important;
   }
-
-  div.centerOnPrintedPage {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    width: 100% !important;
-    /* height: 100vh; */
-  }
-  article,
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h1 + p,
-  h2 + p,
-  h3 + p,
-  ul,
-  img,
-  table,
-  figure {
-    /*Para evitar quebrar figuras e tabelas, use a page-break-insidepropriedade.*/
-    page-break-before: avoid !important;
-    page-break-after: avoid !important;
-    page-break-inside: avoid !important;
-  }
-  h1,
-  h2,
-  h3,
-  h4,
-  h5 {
-    font-weight: bold;
-  }
-
   .p-top-250 {
     padding-top: 250px;
   }
@@ -381,11 +343,16 @@
   .fotopadrao > th:first-child {
     border-left: none;
   }
-}
-@media print and (color) {
-  * {
-    -webkit-print-color-adjust: exact !important;
-    /* color-adjust: exact !important; */
-    print-color-adjust: exact !important;
+  .fotopadraomax {
+    width: auto;
+    height: 95%;
+    max-width: 315px !important;
+    max-height: 285px !important;
+  }
+  /* =========================
+       ESCONDER ELEMENTOS DA TELA
+    ========================= */
+  .no-print {
+    display: none !important;
   }
 }

@@ -25,6 +25,7 @@
     background-color: #333;
     position: fixed;
     width: 100%;
+    z-index: 9999;
   }
 
   .navbar a {
@@ -46,24 +47,56 @@
     background-color: #f57914;
     color: white;
   }
-  .page-capa {
-    width: 19.05cm;
-    height: 26.7cm;
-    margin: 0;
+  .page_capa {
+    display: flex;
+    flex-direction: column;
+    size: A4;
+    width: 210mm;
+    height: 297mm;
+    margin: 0 auto;
+    break-before: page;
+    background-color: white;
     background: white;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
   .page {
-    width: 19.05cm;
-    height: 26.7cm;
-    margin: 10px auto;
+    width: 210mm;
+    height: 297mm;
+    page-break-after: always;
+    margin: 10px auto !important;
     background: white;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-
     /* background-color: #f3f3f3;
     margin: auto;
     padding: 10px 40px !important;
     max-width: 1440px; */
+  }
+
+  .page-inner {
+    position: relative;
+    height: 95%;
+    padding: 15px;
+    /* 
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 10px !important;
+    */
+  }
+  footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    /* background: white; */
+  }
+
+  header {
+    flex: 0 0 auto;
+  }
+
+  main {
+    flex: 1 1 auto;
   }
 
   div.centerOnPrintedPage {
@@ -72,7 +105,7 @@
   }
   .page-report-A4 {
     width: 19.05cm;
-    height: 26.7cm;
+    height: auto;
     background-color: #fff;
     margin: 0 auto;
     padding: 20px;
@@ -312,6 +345,7 @@
   }
   .bg-capa-bottom {
     width: 100%;
+    max-width: 209mm;
     height: auto;
     border: 0 !important;
   }
@@ -356,6 +390,7 @@
     border-radius: 20px;
     border-collapse: separate;
     -moz-border-radius: 6px;
+    padding: 10px;
   }
 
   .fotopadrao > td {
@@ -366,7 +401,15 @@
   .fotopadrao > th:first-child {
     border-left: none;
   }
-
+  .fotopadraomax {
+    width: auto;
+    height: 95%;
+    max-width: 315px !important;
+    max-height: 285px !important;
+  }
+  img.fotopadraomax {
+    cursor: pointer;
+  }
   @keyframes spin {
     0% {
       transform: rotate(0deg);

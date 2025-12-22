@@ -13,7 +13,6 @@ async function getdata(task) {
             if (response.error || response.cabecalho == {}) {
                 setNoData(task, 'falha ao carregar pedido, verifique o numero e tente novamente');
             }
-
             setData(response);
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -85,7 +84,7 @@ function setNoData(task, message) {
     <div class="alert alert warning">Pedido :${task} não encontrado , ${message} </div>;
     `;
 }
-function setData(data) {
+async function setData(data) {
     //loading();
     addCabecalho(data.pedido, data.cabecalho);
     addDadosCliente(data.dadosCliente);
@@ -95,7 +94,8 @@ function setData(data) {
     addFotoPadrao(data.informacoesPreliminares);
     addSecao(data.secoes);
     addAssinaturas(data.participantes);
-    formataA4();
+    await formataA4();
+    document.getElementById('btprint').style.display = 'block';
     loading();
 }
 function getHeader() {
@@ -116,14 +116,15 @@ function getHeader() {
 }
 
 function getFooter() {
+
     return `
-    <tr class="page-report-footer">
-        <td class="plr-20">
+    <tr class="page-report-footer" style="width:100%">
+        <td class="pdt-20 plr-20">
             <table width="100%" class="border-rounded" cellpadding="0" cellspacing="0">
                 <tbody class="border-none">
                     <tr class="border-none">
-                        <td style="width:50%;" class="border-none" align="left">(49) 3664-8000</td>
-                        <td style="width:50%;" class="border-none" align="left">ROD. BR KM 102,3 - LINHA HUMAITÁ -
+                        <td style="width:40%;" class="border-none" align="left">(49) 3664-8000</td>
+                        <td style="width:60%;" class="border-none" align="left">ROD. BR KM 102,3 - LINHA HUMAITÁ -
                             INDUSTRIAL<br>CEP 89890-000 Cunha Porã / SC</td>
                     </tr>
                 </tbody>
@@ -133,34 +134,50 @@ function getFooter() {
 }
 
 function addAssinaturas(data) {
-    let totalAssinaturas = data.length;
-    let indexAssinaturas = 0
     let _tds = '';
     let tr = '';
+
     for (let index = 1; index <= data.length; index++) {
         let participante = data[index - 1];
-        _tds += `<td align="center" style="width:50%;">
-                    <img src="${participante.Assinatura}" width="95%" height="auto">
-                    <br><span class="label">Nome: ${participante.Nome} </span>
-                    <br><span class="label">Empresa: ${participante.Empresa} </span>
+        _tds += `
+        <td align="center">
+            <img src="${participante.Assinatura}" class="fotopadraomax" onclick="window.open('${participante.Assinatura}', '_blank');" >
+            <br><span class="label">Nome: ${participante.Nome} </span>
+            <br><span class="label">Empresa: ${participante.Empresa} </span>
         </td>`;
         if (index % 2 == 0 || index >= data.length) {
-            _tr += `<tr>${_tds}</tr>`;
-            _tds = '';
-        }
-    }
-    tr += ` <tr class="page-report-content">
+            tr += `
+            <tr class="page-report-content">
                 <td class="pdt-10 plr-20 fotopadrao">
                     <span class="titulo-atividade">Assinaturas</span>
                     <table width="100%" class="fotopadrao">
                         <tbody>
-                            ${_tr}
+                            <tr>${_tds}</tr>
                         </tbody>
                     </table>
                 </td>
             </tr>`;
-    addContentTable(tr);
-    tr = '';
+            _tds = '';
+        }
+    }
+    if (_tds) {
+        tr += `<tr class="page-report-content">
+                <td class="pdt-10 plr-20 fotopadrao">
+                    <span class="titulo-atividade">Assinaturas</span>
+                    <table width="100%" class="fotopadrao">
+                        <tbody>
+                            <tr>${_tds}</tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>`;
+        _tds = '';
+    }
+    if (tr) {
+        addContentTable(tr);
+        tr = '';
+    }
+
 }
 
 function addSecao(secoes) {
@@ -177,43 +194,57 @@ function addSecao(secoes) {
         _tr_tds = [];
         newLine = false;
         linha = 0;
+        linhaTamanho = 0;
+        let linhaAntes = 0;
+        let tamanhoArrayAntes = 0;
         secao.itens.forEach(item => {
             index++;
-            strinSize = item.descricao.length + item.valor.length + 2;
+            item.tamanho = item.descricao.length + item.valor.length + 2;
             if (!(linha in _tr_tds)) {
                 _tr_tds[linha] = [];
             }
-            if ((strinSize > 50) && linha > 0) {
+            if (item.tamanho > 50) {
+                linhaAntes = linha;
+                tamanhoArrayAntes = _tr_tds[linha].length;
+                if (tamanhoArrayAntes >= 1) {
+                    linhaAnterior = linha;
+                    linha++; _tr_tds[linha] = [];
+                    linhaTamanho = 0;
+                }
+            }
+            if (_tr_tds[linha].length == 2) {
                 linha++;
                 _tr_tds[linha] = [];
+                linhaTamanho = 0;
             }
-            _tr_tds[linha].push({
-                tamanho: strinSize, div: `
-                    <div class="form-row">
-                        <span class="label">${item.descricao}: </span>
-                        <span class="underline-space" id="${item.campo}">${item.valor}</span>
-                    </div>`});
-            if (_tr_tds[linha].length > 1) {
+            linhaTamanho += item.tamanho;
+            _tr_tds[linha].push({ item: item });
+            if (_tr_tds[linha].length == 2 || item.tamanho > 50) {
                 linha++;
+                _tr_tds[linha] = [];
+                linhaTamanho = 0;
             }
         });
         _tr_tds.forEach(linha => {
-            _trtd = '';
+            _tds = '';
             per = 100 / linha.length;
-            colspan = linha.length == 1 ? 2 : 1;
+            colspan = linha.length == 1 ? 3 : 1;
             linha.forEach(td => {
-
-                if (td.tamanho > 50) {
-                    _tr += `<tr><td colspan="2" data-size="${td.tamanho}" style="width:100%"> ${td.div}</td></tr>`;
-                } else {
-                    _trtd += `<td colspan="${colspan}" data-size="${td.tamanho}" style="width:${per}%"> ${td.div}</td>`;
-                }
+                let item = td.item;
+                _tds += `
+                <td colspan="${colspan}" data-size="${item.tamanho}" style="width:${per}%">
+                    <div class="form-row">
+                        <span class="label">${item.descricao}: </span>
+                        <span class="underline-space" id="${item.campo}">${item.valor}</span>
+                    </div>
+                </td>`;
             });
-            _tr += `<tr>${_trtd}</tr>`;
+            _tr += `<tr>${_tds}</tr>`;
         });
 
         //Seção
-        _secao += `<tr class="page-report-content">
+        if (_tr) {
+            _secao += `<tr class="page-report-content">
                     <td class="pdt-10 plr-20">
                         <span class="titulo-atividade">${secao.descricao}</span>
                         <table width="100%" class="border-rounded" cellpadding="0" cellspacing="0">
@@ -229,6 +260,7 @@ function addSecao(secoes) {
                         </table>
                     </td >
                 </tr> `;
+        }
 
         //Observações
         if (secao.observacao) {
@@ -262,34 +294,41 @@ function addSecao(secoes) {
             _tds = '';
             secao.fotos.forEach(foto => {
                 indexFotos++;
-                _tds += `<td align="center" style="width:50%;"><img src="${foto}" width="95%" height="auto"></td>`;
+                _tds += `<td align="center"><img onclick="window.open('${foto}', '_blank');" src="${foto}" class="fotopadraomax"></td>`;
                 if (indexFotos % 2 == 0 || indexFotos >= totalFotos) {
-                    _tr += `<tr>${_tds}</tr>`;
+                    _secao += `
+                    <tr class="page-report-content">
+                        <td class="pdt-10 plr-20 fotopadrao">
+                            <span class="titulo-atividade">Foto Padrão</span>
+                            <table width="100%" class="fotopadrao">
+                                <tbody>
+                                    <tr>${_tds}</tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>`;
                     _tds = '';
                 }
             });
-            _secao += `
-            <tr class="page-report-content">
-                <td class="pdt-10 plr-20 fotopadrao">
-                    <span class="titulo-atividade">Foto Padrão</span>
-                    <table width="100%" class="fotopadrao">
-                        <tbody>
-                            ${_tr}
-                        </tbody>
-                    </table>
-                </td>
-            </tr>`;
-            _tr = '';
+            if (_tds) {
+                _secao += `
+                    <tr class="page-report-content">
+                        <td class="pdt-10 plr-20 fotopadrao">
+                            <span class="titulo-atividade">Foto Padrão</span>
+                            <table width="100%" class="fotopadrao">
+                                <tbody>
+                                    <tr>${_tds}</tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>`;
+                _tds = '';
+            }
         }
-        let page = `
-        <div class="page">
-            <table border=0 class="page-report-A4" width="100%">
-                <tbody>${_secao}<tbody>
-            </table>
-        </div>`;
-        addContentTable(_secao);
-        _secao = '';
-        page = '';
+        if (_secao) {
+            addContentTable(_secao);
+            _secao = '';
+        }
     }
 }
 
@@ -583,40 +622,49 @@ function addFotoPadrao(data) {
         _tds = '';
         data.fotos.forEach(foto => {
             indexFotos++;
-            _tds += `<td align="center" style="width:50%;"><img src="${foto}" width="95%" height="auto"></td>`;
+            _tds += `<td align="center" style="width:50%;"><img onclick="window.open('${foto}', '_blank');" class="fotopadraomax" src="${foto}"></td>`;
             if (indexFotos % 2 == 0 || indexFotos >= totalFotos) {
-                _tr += `<tr>${_tds}</tr>`;
+                tr += `
+                    <tr class="page-report-content">
+                        <td class="pdt-10 plr-20 fotopadrao">
+                            <span class="titulo-atividade">Foto Padrão</span>
+                            <table width="100%" class="fotopadrao">
+                                <tbody>
+                                    ${_tds}
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>`;
                 _tds = '';
             }
         });
-        tr += `
-            <tr class="page-report-content">
-                <td class="pdt-10 plr-20 fotopadrao">
-                    <span class="titulo-atividade">Foto Padrão</span>
-                    <table width="100%" class="fotopadrao">
-                        <tbody>
-                            ${_tr}
-                        </tbody>
-                    </table>
-                </td>
-            </tr>`;
-        _tr = '';
+        if (_tds) {
+            tr += `
+                    <tr class="page-report-content">
+                        <td class="pdt-10 plr-20 fotopadrao">
+                            <span class="titulo-atividade">Foto Padrão</span>
+                            <table width="100%" class="fotopadrao">
+                                <tbody>
+                                    ${_tds}
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>`;
+            _tds = '';
+        }
         addContentTable(tr);
         tr = '';
 
     }
 }
-function esperarImagens(container) {
-    const imgs = container.querySelectorAll('img');
-
-    return Promise.all(
-        [...imgs].map(img => {
-            if (img.complete) return Promise.resolve();
-            return new Promise(resolve => {
-                img.onload = img.onerror = resolve;
-            });
-        })
-    );
+async function esperarImagens() {
+    return await Promise.all(
+        Array.from(document.images).filter(
+            img => !img.complete).map(
+                img => new Promise(resolve => {
+                    img.onload = img.onerror = resolve;
+                })
+            ));
 }
 
 async function formataA4() {
@@ -628,10 +676,10 @@ async function formataA4() {
 
     const alturaA4 = 1000; // 26.7cm em pixels (ajustado para conteúdo)
     const margemHeader = 105; // reserva header + footer
-    const margemFooter = 45; // reserva header + footer
+    const margemFooter = 60; // reserva header + footer
     const alturaUtil = alturaA4 - (margemHeader + margemFooter);
 
-    await esperarImagens(origem);
+    await esperarImagens();
 
     const elementos = Array.from(origem.children);
 
@@ -641,23 +689,15 @@ async function formataA4() {
     temp.style.position = 'absolute';
     temp.style.top = '0';
     temp.style.left = '0';
-    // temp.style.width = '210mm';      // 👈 FUNDAMENTAL
-    temp.style.boxSizing = 'border-box';
-    temp.style.padding = '20mm';
     temp.style.overflow = 'hidden';
-    temp.style.height = alturaUtil + 'px';
-    // temp.style.visibility = 'hidden';
+    temp.style.maxHeight = alturaUtil + 'px';
     temp.style.width = origem.offsetWidth + 'px';
 
     document.body.appendChild(temp);
 
-
-
-    let paginaAtual = [];
-    let numeroPagina = 1;
+    let numeroPagina = 0;
     let safety = 0;
     const MAX = 300;
-
     while (elementos.length > 0) {
         if (++safety > MAX) {
             console.error('Loop interrompido por segurança');
@@ -666,12 +706,13 @@ async function formataA4() {
         const el = elementos.shift(); // REMOVE da fila → progresso garantido
         temp.appendChild(el.cloneNode(true));
 
-        if (temp.scrollHeight > temp.clientHeight) {
-            // remove o último que estourou
-            temp.removeChild(temp.lastElementChild);
+        if (temp.scrollHeight > alturaUtil) {
+            let tamanhoAntesRemover = temp.scrollHeight;
 
-            // salva página cheia
-            paginas.push(criarPagina(numeroPagina++, headerContentHTML, temp.innerHTML, footerContentHTML));
+            temp.removeChild(temp.lastElementChild);
+            let sobra = (alturaUtil - temp.scrollHeight);
+            numeroPagina++;
+            paginas.push(criarPagina(numeroPagina, headerContentHTML, temp.innerHTML, footerContentHTML));
 
             // limpa e começa nova página
             temp.innerHTML = '';
@@ -689,17 +730,12 @@ async function formataA4() {
     document.getElementById('page-content-page').remove();
     // renderiza Body
     destino.innerHTML += paginas.join('');
-    // document.body.innerHTML += paginas.join('');
-
-    // origem Remove
-    /* 
-    
-    */
-    // document.getElementById('content-page')
-    // origem.remove();
+    let loadHtml = document.getElementById('body');
+    await esperarImagens();
     paginas = undefined;
 }
 function criarPagina(numeropagina, headerContentHTML, conteudoHTML, footerContentHTML) {
+    /* 
     return `
         <div class="pagebreak-before">
             <div class="page" >
@@ -709,5 +745,14 @@ function criarPagina(numeropagina, headerContentHTML, conteudoHTML, footerConten
                     <tfoot class="page-footer" >${footerContentHTML}</tfoot>
                 </table>
             </div>
+        </div>`;
+    */
+    return `
+        <div class="page" id="page-${numeropagina}">
+            <div class="page-inner">
+                <header><table width="100%">${headerContentHTML}</table></header>
+                <main class="content" ><table  width="100%" >${conteudoHTML}</table></main>    
+                <footer><table width="100%">${footerContentHTML}</table></footer>
+            </div>    
         </div>`;
 }
