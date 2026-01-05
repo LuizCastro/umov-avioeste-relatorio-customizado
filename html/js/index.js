@@ -95,6 +95,7 @@ function setNoData(task, message) {
     hideLoader();
 }
 async function setData(data) {
+    document.title += ` - Pedido ${data.pedido}`;
     addCabecalho(data.pedido, data.cabecalho);
     addDadosCliente(data.dadosCliente);
     addParticipantes(data.participantes);
