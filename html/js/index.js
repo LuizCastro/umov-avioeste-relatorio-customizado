@@ -846,12 +846,37 @@ function showLoader() {
         if (item) { item.classList.add('active'); }
     }, 1000);
 }
+function showbtPrint(show, windowprint = false) {
 
+    const pages = document.querySelectorAll('.pagedjs_pagebox');
+    const print = document.getElementById('btprint');
+    print.innerHTML = '';
+    print.style.position = 'fixed';
+    print.style.top = 0;
+    print.style.zIndex = 9999;
+    print.style.marginLeft = '-200px';
+    if (show) {
+        print.innerHTML = '<div class="navbar" ><a href="javascript:showbtPrint(false,true)" class="active">IMPRIMIR</a></div>';
+        print.style.display = 'block';
+        pages.forEach(page => {
+            page.classList.add('previewstyleage');
+        });
+    } else {
+        print.style.display = 'none';
+        pages.forEach(page => {
+            page.classList.remove('previewstyleage');
+        });
+    }
+    if (windowprint) {
+        window.print();
+    }
+}
 function hideLoader() {
     const loader = document.getElementById('loading-spinner-2');
     loader.classList.add('hide');
     setTimeout(() => {
         loader.style.display = 'none';
+        showbtPrint(true);
         clearInterval(morphInterval);
         morphInterval = null;
     }, 400);
