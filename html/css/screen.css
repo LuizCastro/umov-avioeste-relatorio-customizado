@@ -1,424 +1,290 @@
-@media screen {
-  html,
-  body {
-    font-family: Montserrat, "Open Sans", Helvetica, Arial, sans-serif !important;
-  }
-  hr {
-    height: 1px !important;
-    background-color: #f57914 !important;
-    border: none !important;
-    border-top: none !important;
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
-  }
-
-  body {
-    background-color: #f3f3f3 !important;
-    font-size: 18px !important;
-    width: 100% !important;
-    font-family: "Montserrat", sans-serif;
-    margin: 0;
-  }
-
-  .navbar {
-    overflow: hidden;
-    background-color: #333;
-    position: fixed;
-    width: 100%;
-    z-index: 9999;
-  }
-
-  .navbar a {
-    float: none;
-    display: block;
-    color: #f2f2f2;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-    font-size: 20px;
-  }
-
-  .navbar a:hover {
-    background: #f1f1f1;
-    color: black;
-  }
-
-  .navbar a.active {
-    background-color: #f57914;
-    color: white;
-  }
-  .page_capa {
-    display: flex;
-    flex-direction: column;
-    size: A4;
-    width: 210mm;
-    height: 297mm;
-    margin: 0 auto;
-    break-before: page;
-    background-color: white;
-    background: white;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  .page {
-    width: 210mm;
-    height: 297mm;
-    page-break-after: always;
-    margin: 10px auto !important;
-    background: white;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    /* background-color: #f3f3f3;
-    margin: auto;
-    padding: 10px 40px !important;
-    max-width: 1440px; */
-  }
-
-  .page-inner {
-    position: relative;
-    height: 95%;
-    padding: 15px;
-    /* 
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    padding: 10px !important;
-    */
-  }
-  footer {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    /* background: white; */
-  }
-
-  header {
-    flex: 0 0 auto;
-  }
-
-  main {
-    flex: 1 1 auto;
-  }
-
-  div.centerOnPrintedPage {
-    width: 100%;
-    background-color: #fff;
-  }
-  .page-report-A4 {
-    width: 19.05cm;
-    height: auto;
-    background-color: #fff;
-    margin: 0 auto;
-    padding: 20px;
-    max-width: 100%;
-  }
-  .page-report-header {
-    width: 100% !important;
-    margin: 0 auto !important;
-    padding: 25px !important;
-  }
-  .page-header {
-    flex: 0 0 auto;
-  }
-  .page-content {
-    flex: 1 1 auto;
-  }
-  .page-footer {
-    flex: 0 0 auto;
-    bottom: 0;
-    width: 100%;
-  }
-  .page-report-footer {
-    font-size: 11px !important;
-    padding: 25px !important;
-    width: 100% !important;
-    margin: 0 auto !important;
-  }
-  .page-report-content {
-    font-size: 12px !important;
-    padding: 0 10px 0 10px;
-    margin: 0 auto !important;
-    width: 100% !important;
-    /* Adjust the width as needed */
-    /* Adjust the height as needed*/
-    box-sizing: border-box !important;
-    background-color: #fff !important;
-  }
-  .pagebreak-before {
-    width: 100%;
-    background-color: #f3f3f3;
-  }
-  .pagebreak-after {
-    width: 100%;
-    background-color: #f3f3f3;
-  }
-  table,
-  tr,
-  td {
-    border-spacing: 0px; /* 10px space between all cells (rows and columns) */
-  }
-
-  .titulo-atividade {
-    font-size: 14px !important;
-    margin-left: 20px !important;
-    margin-top: 20px !important;
-    font-weight: 800 !important;
-  }
-  .atividade {
-    vertical-align: top;
-  }
-
-  .atividade-img,
-  .atividade-img-croqui {
-    width: 98% !important;
-    height: 400px !important;
-    overflow: hidden !important;
-    margin: 0 auto !important;
-    background-position: center !important;
-    background-size: auto 100% !important;
-    background-repeat: no-repeat !important;
-    border: none !important;
-  }
-  .logo {
-    width: 120px !important;
-  }
-  .capa-logo {
-    padding-top: 100px;
-    width: 400px;
-  }
-  .capa-cliente {
-    width: 100%;
-    padding: 0px !important;
-    text-align: center;
-  }
-  .capa-fs-18 {
-    font-size: 18px !important;
-  }
-
-  .capa_silver {
-    color: silver !important;
-  }
-
-  .capa-background {
-    background-color: #f57914;
-    color: #fff !important;
-  }
-
-  .capa-background-black {
-    background-color: black !important;
-    color: #fff !important;
-  }
-
-  .capa-fs-20 {
-    font-size: 20px !important;
-  }
-  .marcador {
-    border-left: 5px solid #f57914 !important;
-  }
-
-  .border-rounded {
-    border: 2px solid black;
-    border-radius: 20px;
-    padding: 5px 20px;
-  }
-  .border-none {
-    border: none !important;
-  }
-  .fs-12 {
-    font-size: 12px !important;
-  }
-  .fs-14 {
-    font-size: 14px !important;
-  }
-  .fs-16 {
-    font-size: 16px !important;
-  }
-  .fs-18 {
-    font-size: 18px !important;
-  }
-  .fs-20 {
-    font-size: 20px !important;
-  }
-  .fs-30 {
-    font-size: 30px !important;
-  }
-  .fs-35 {
-    font-size: 35px !important;
-  }
-  .fs-40 {
-    font-size: 40px !important;
-  }
-  .fs-45 {
-    font-size: 45px !important;
-  }
-  .fs-50 {
-    font-size: 50px !important;
-  }
-
-  .fb {
-    font-weight: bold;
-  }
-  .fb-100 {
-    font-weight: 100;
-  }
-  .fb-200 {
-    font-weight: 200;
-  }
-  .fb-300 {
-    font-weight: 300;
-  }
-  .fb-400 {
-    font-weight: 400;
-  }
-  .fb-500 {
-    font-weight: 500;
-  }
-  .fb-600 {
-    font-weight: 600;
-  }
-  .fb-700 {
-    font-weight: 700;
-  }
-  .fb-800 {
-    font-weight: 800;
-  }
-  .fb-900 {
-    font-weight: 900;
-  }
-
-  .pl-30 {
-    padding-left: 30px !important;
-  }
-  .pl-20 {
-    padding-left: 20px !important;
-  }
-  .pl-10 {
-    padding-left: 10px !important;
-  }
-  .p-top-250 {
-    padding-top: 250px;
-  }
-  .p-bottom-250 {
-    padding-bottom: 250px;
-  }
-  .p-bottom-20 {
-    padding-bottom: 20px;
-  }
-  .pd-10 {
-    padding: 10px !important;
-  }
-  .plr-10 {
-    padding-left: 10px !important;
-    padding-right: 10px !important;
-  }
-  .plr-20 {
-    padding-left: 20px !important;
-    padding-right: 20px !important;
-  }
-  .pdt-10 {
-    padding-top: 10px !important;
-  }
-  .pdt-20 {
-    padding-top: 20px !important;
-  }
-
-  .form-row {
-    display: flex; /* Aligns children in a row */
-    width: 100%; /* Ensures the row takes full width */
-    align-items: baseline; /* Aligns text and underline properly */
-  }
-
-  .label {
-    /* Optional: Add some margin if desired */
-    margin-right: 5px;
-  }
-
-  .underline-space {
-    flex-grow: 1; /* This makes the span fill the remaining space */
-    border-bottom: 1px solid black; /* This creates the continuous line */
-    /* Optional: Adjust vertical spacing with padding/margin as needed */
-    margin-bottom: 3px;
-  }
-  .separador {
-    height: 10px;
-    width: 100%;
-    background-color: #f3f3f3;
-  }
-  .bg-capa-bottom {
-    width: 100%;
-    max-width: 209mm;
-    height: auto;
-    border: 0 !important;
-  }
-  img.bg-capa-bottom {
-    border: 0 !important;
-  }
-  .m-t-0 {
-    margin-top: 0px !important;
-  }
-  .m-b-0 {
-    margin-bottom: 0px !important;
-  }
-  .equalDivide {
-    width: 50%;
-  }
-  .text-left {
-    text-align: left;
-  }
-  #loading-spinner {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #fff; /* White background overlay */
-    z-index: 9999; /* Ensure it's on top of everything */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .loader {
-    border: 16px solid #f3f3f3; /* Light grey border */
-    border-top: 16px solid #f57914; /* Blue top border (the spinning part) */
-    border-radius: 50%;
-    width: 120px;
-    height: 120px;
-    animation: spin 2s linear infinite;
-  }
-  .fotopadrao > table {
-    border: 2px solid black;
-    border-radius: 20px;
-    border-collapse: separate;
-    -moz-border-radius: 6px;
-    padding: 10px;
-  }
-
-  .fotopadrao > td {
-    border-left: solid black 2px;
-    border-top: solid black 2px;
-  }
-  .fotopadrao > td:first-child,
-  .fotopadrao > th:first-child {
-    border-left: none;
-  }
-  .fotopadraomax {
-    width: auto;
-    height: 95%;
-    max-width: 315px !important;
-    max-height: 285px !important;
-  }
-  img.fotopadraomax {
-    cursor: pointer;
-  }
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
-  }
+body {
+  background-color: #ffffff !important;
+  font-family: Montserrat, "Open Sans", Helvetica, Arial, sans-serif !important;
+  font-size: 18px !important;
+  margin: 0 auto;
+  max-width: 700px;
 }
+
+main {
+  font-size: 12px;
+  line-height: 1.3;
+  padding: 0 10px;
+}
+.logo {
+  width: 120px !important;
+}
+.d-flex {
+  display: flex;
+}
+.d-left {
+  flex: 1;
+}
+.d-center {
+  flex: 1;
+}
+.d-right {
+  flex: 1;
+}
+.text-right {
+  text-align: right;
+}
+.text-left {
+  text-align: left;
+}
+.text-center {
+  text-align: center;
+}
+header {
+  position: running(header);
+}
+.navbar {
+  overflow: hidden;
+  background-color: #333;
+  position: fixed;
+  width: 100%;
+  z-index: 9999;
+}
+
+.navbar a {
+  float: none;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 20px;
+}
+
+.navbar a:hover {
+  background: #f1f1f1;
+  color: black;
+}
+
+.navbar a.active {
+  background-color: #f57914;
+  color: white;
+}
+
+.page-report-header {
+  width: 100% !important;
+  margin: 0 auto !important;
+  padding: 25px !important;
+}
+
+footer {
+  position: running(footer);
+  padding: 6px 0;
+  text-align: right;
+  font-size: 12px;
+}
+
+.titulo-atividade {
+  font-size: 14px !important;
+  margin-left: 20px !important;
+  margin-top: 20px !important;
+  font-weight: 800 !important;
+}
+.atividade {
+  vertical-align: top;
+}
+
+.atividade-img,
+.atividade-img-croqui {
+  width: 98% !important;
+  height: 400px !important;
+  overflow: hidden !important;
+  margin: 0 auto !important;
+  background-position: center !important;
+  background-size: auto 100% !important;
+  background-repeat: no-repeat !important;
+  border: none !important;
+}
+.logo {
+  width: 120px !important;
+}
+.capa-logo {
+  padding-top: 0px;
+  width: 400px;
+}
+.capa-cliente {
+  width: 100%;
+  padding: 0px !important;
+  text-align: center;
+}
+.capa-fs-18 {
+  font-size: 18px !important;
+}
+.bg-capa-bottom {
+  width: 100%;
+  max-width: 209mm;
+  height: auto;
+  border: 0 !important;
+}
+img.bg-capa-bottom {
+  border: 0 !important;
+}
+
+.capa_silver {
+  color: silver !important;
+}
+
+.capa-background {
+  background-color: #f57914;
+  color: #fff !important;
+}
+.underline-space {
+  flex-grow: 1; /* This makes the span fill the remaining space */
+  border-bottom: 1px solid black; /* This creates the continuous line */
+  /* Optional: Adjust vertical spacing with padding/margin as needed */
+  margin-bottom: 3px;
+}
+.center {
+  margin: auto;
+  width: 100%;
+  padding: 0px 10px;
+  text-align: left;
+}
+.capa-background-black {
+  background-color: black !important;
+  color: #fff !important;
+}
+
+.capa-fs-20 {
+  font-size: 20px !important;
+}
+.marcador {
+  border-left: 5px solid #f57914 !important;
+}
+
+.border-rounded {
+  border: 2px solid black;
+  border-radius: 20px;
+  padding: 5px 20px;
+}
+.border-rounded-img {
+  border: 2px solid black;
+  border-radius: 20px;
+}
+.td-img {
+  border-right: 2px solid black;
+  padding: 13px 0px;
+}
+.td-img:last-child {
+  border-right: none;
+}
+
+.border-none {
+  border: none !important;
+}
+.fs-12 {
+  font-size: 12px !important;
+}
+.fs-14 {
+  font-size: 14px !important;
+}
+.fs-16 {
+  font-size: 16px !important;
+}
+.fs-18 {
+  font-size: 18px !important;
+}
+.fs-20 {
+  font-size: 20px !important;
+}
+.fs-30 {
+  font-size: 30px !important;
+}
+.fs-35 {
+  font-size: 35px !important;
+}
+.fs-40 {
+  font-size: 40px !important;
+}
+.fs-45 {
+  font-size: 45px !important;
+}
+.fs-50 {
+  font-size: 50px !important;
+}
+
+.fb {
+  font-weight: bold;
+}
+.fb-100 {
+  font-weight: 100;
+}
+.fb-200 {
+  font-weight: 200;
+}
+.fb-300 {
+  font-weight: 300;
+}
+.fb-400 {
+  font-weight: 400;
+}
+.fb-500 {
+  font-weight: 500;
+}
+.fb-600 {
+  font-weight: 600;
+}
+.fb-700 {
+  font-weight: 700;
+}
+.fb-800 {
+  font-weight: 800;
+}
+.fb-900 {
+  font-weight: 900;
+}
+
+.pl-30 {
+  padding-left: 30px !important;
+}
+.pl-20 {
+  padding-left: 20px !important;
+}
+.pl-10 {
+  padding-left: 10px !important;
+}
+.p-top-250 {
+  padding-top: 250px;
+}
+.p-bottom-250 {
+  padding-bottom: 250px;
+}
+.p-bottom-20 {
+  padding-bottom: 20px;
+}
+.pd-10 {
+  padding: 10px !important;
+}
+.plr-10 {
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+}
+.plr-20 {
+  padding-left: 20px !important;
+  padding-right: 20px !important;
+}
+.pdt-10 {
+  padding-top: 10px !important;
+}
+.pdt-20 {
+  padding-top: 20px !important;
+}
+.form-row {
+  display: flex; /* Aligns children in a row */
+  width: 100%; /* Ensures the row takes full width */
+  align-items: baseline; /* Aligns text and underline properly */
+}
+
+.label {
+  /* Optional: Add some margin if desired */
+  margin-right: 5px;
+}
+
 #loading-spinner-2 {
   position: fixed;
   inset: 0;
@@ -489,4 +355,108 @@
 /* Class to show the message */
 .show-message {
   display: block;
+}
+
+/* 👉 margens da página */
+@page {
+  margin: 35mm 10mm 20mm 10mm;
+  size: A4;
+  width: 210mm;
+
+  @top-center {
+    content: element(header);
+  }
+
+  @bottom-center {
+    content: element(footer);
+  }
+}
+@page:first {
+  /* Hide the content in the top-center margin box */
+  @top-center {
+    content: none; /* Or "none", depending on Paged.js version/behavior */
+    display: none;
+  }
+
+  /* Hide the content in the bottom-center margin box */
+  @bottom-center {
+    content: none; /* Or "none" */
+    display: none;
+  }
+  margin: 45mm 0mm 0mm 0mm;
+  size: A4;
+  width: 210mm;
+
+  /* Additionally, you may want to ensure the margin areas themselves don't take up space */
+  /* This can be more complex, but setting content to normal/none usually works for the content itself */
+}
+
+@media screen {
+  .no-print {
+    display: block !important;
+  }
+}
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}
+h1,
+h2,
+.titulo-atividade > .border-rounded,
+img {
+  page-break-inside: auto !important;
+  break-inside: auto !important;
+}
+table,
+thead,
+tbody,
+tr,
+span {
+  break-inside: auto !important;
+}
+
+.grid-container {
+  display: grid;
+  /* Defines 3 columns of equal width (1 fraction of available space) */
+  grid-template-columns: 1fr 1fr 1fr;
+  /* Defines row height automatically based on content */
+  grid-auto-rows: auto;
+  /* Adds space (gap) between items */
+  gap: 10px;
+}
+
+.item {
+  padding: 1em;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+
+.fotopadrao > table {
+  border: 2px solid black;
+  border-radius: 20px;
+  border-collapse: separate;
+  -moz-border-radius: 6px;
+  padding: 10px;
+}
+
+.fotopadrao > td {
+  border-left: solid black 2px;
+  border-top: solid black 2px;
+}
+.fotopadrao > td:first-child,
+.fotopadrao > th:first-child {
+  border-left: none;
+}
+.fotopadraomax {
+  width: auto;
+  height: 95%;
+  /* max-width: 315px !important; 
+    max-height: 285px !important;
+    */
+  max-width: 82mm !important;
+  max-height: 100mm !important;
+}
+img.fotopadraomax {
+  cursor: pointer;
 }

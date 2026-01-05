@@ -1,7 +1,9 @@
+let ArrayFotos = [];
 async function getdata(task) {
     loading();
     if (task == undefined || task == '') {
-        setNoData(task);
+        setNoData('', '<br>Por favor, informe o numero do pedido');
+        return;
     }
     var url = `https://trlvvv52244il555u3yfuqampe0lulvd.lambda-url.us-east-1.on.aws/?pedido=${task}`;
     $.ajax({
@@ -81,68 +83,71 @@ function loading() {
 }
 
 function setNoData(task, message) {
-    hideLoader();
-    document.getElementById('body').innerHTML = `
+    addContentMain(`
     <div id="loading-spinner-2">
         <div>
             <img src="https://avioeste.com.br/files/1466737/24db8bc7a776d5e833638f581f3facb5" width="250px">
             <br>
             <br>
         </div>
-        <div class="error-message">Pedido :${task} não encontrado , ${message}</div>
-    </div>`;
+        <div class="error-message"><p>Pedido :${task} não encontrado </p><p>${message ? message : ''}</p></div>
+    </div>`);
+    hideLoader();
 }
 async function setData(data) {
-    //loading();
-
     addCabecalho(data.pedido, data.cabecalho);
     addDadosCliente(data.dadosCliente);
     addParticipantes(data.participantes);
     addInformacoesPreliminares(data.informacoesPreliminares);
     addCondideracaorIniciais(data.informacoesPreliminares);
-    addFotoPadrao(data.informacoesPreliminares);
-    addSecao(data.secoes);
-    addAssinaturas(data.participantes);
-    await formataA4();
-    document.getElementById('btprint').style.display = 'block';
+    await addSecao(data.secoes);
+    await ajustaGaleria();
+    await addAssinaturas(data.participantes);
+    await addPrintPreview();
     hideLoader();
 }
+async function addPrintPreview() {
+    //document.getElementById('btprint').style.display = 'block';
+    const script = document.createElement("script");
+    // script.src = 'https://unpkg.com/pagedjs/dist/paged.polyfill.js';
+    script.src = 'js/paged.polyfill.js';
+    script.defer = true;
+    script.setAttribute("data-pagedjs", "true");
+    document.body.appendChild(script);
+}
+async function ajustaGaleria() {
+    let divfotos = document.getElementById('galeria');
+    addContentMain(divfotos.innerHTML);
+    divfotos.remove();
+}
 function getHeader() {
-    return `
-    <tr class="page-report-head">
-        <th>
-            <table width="99%" class="border-rounded" cellpadding="0" cellspacing="0">
-                <tbody class="border-none">
-                    <tr class="border-none">
-                        <td class="border-none" width="70%" align="left" class="fb-600 fs-20">CHECK LIST<BR><span
-                                class="fb-800 fs-20">ENTREGA TÉCNICA</td>
-                        <td class="border-none" width="30%" align="right"><img class="logo" src="img/logo.png"></td>
-                    </tr>
-                </tbody>
-            </table>
-        </th>
-    </tr>`;
+    let header = `
+    <header class="page-report-head print-header">
+        <div class="border-rounded d-flex">
+            <div class="fb-600 fs-20" style="width:70%">CHECK LIST<BR><span class="fb-800 fs-20">ENTREGA TÉCNICA</span></div>
+            <div class="text-right" style="width:30%" ><img class="logo" src="img/logo.png"></div>
+        </div>
+    </div>`;
+    return header;
 }
 
 function getFooter() {
 
     return `
-    <tr class="page-report-footer" style="width:100%">
-        <td class="pdt-20 plr-20">
-            <table width="100%" class="border-rounded" cellpadding="0" cellspacing="0">
-                <tbody class="border-none">
-                    <tr class="border-none">
-                        <td style="width:40%;" class="border-none" align="left">(49) 3664-8000</td>
-                        <td style="width:60%;" class="border-none" align="left">ROD. BR KM 102,3 - LINHA HUMAITÁ -
+    <footer class="page-report-content pdt-10 pdb-10 plr-20 print-footer">
+        <table width="100%" class="border-rounded" cellpadding="0" cellspacing="0">
+            <tbody class="border-none">
+                <tr class="border-none">
+                    <td width="50%" align="left" class="text-left fb-600 fs-14" >(49) 3664-8000</td>
+                    <td>ROD. BR KM 102,3 - LINHA HUMAITÁ -
                             INDUSTRIAL<br>CEP 89890-000 Cunha Porã / SC</td>
-                    </tr>
-                </tbody>
-            </table>
-        </td>
-    </tr>`;
+                </tr>
+            </tbody>
+        </table>
+    </footer>`;
 }
 
-function addAssinaturas(data) {
+async function addAssinaturas(data) {
     let _tds = '';
     let tr = '';
 
@@ -156,44 +161,88 @@ function addAssinaturas(data) {
         </td>`;
         if (index % 2 == 0 || index >= data.length) {
             tr += `
-            <tr class="page-report-content">
-                <td class="pdt-10 plr-20 fotopadrao">
+            <div class="page-report-content pdt-10 plr-20 fotopadrao">
                     <span class="titulo-atividade">Assinaturas</span>
                     <table width="100%" class="fotopadrao">
                         <tbody>
                             <tr>${_tds}</tr>
                         </tbody>
                     </table>
-                </td>
-            </tr>`;
+            </div>`;
             _tds = '';
         }
     }
     if (_tds) {
-        tr += `<tr class="page-report-content">
-                <td class="pdt-10 plr-20 fotopadrao">
+        tr += `<div class="page-report-content pdt-10 plr-20 fotopadrao">
                     <span class="titulo-atividade">Assinaturas</span>
                     <table width="100%" class="fotopadrao">
                         <tbody>
                             <tr>${_tds}</tr>
                         </tbody>
                     </table>
-                </td>
-            </tr>`;
+                </div>`;
         _tds = '';
     }
     if (tr) {
-        addContentTable(tr);
+        await addContentMain(tr);
         tr = '';
     }
 
 }
+let qtdfotosGaleria = 0;
+let divFoto = '';
+let trFotos = 0;
 
+function addFoto(foto, ultimafoto = false, origem) {
+    if (foto == undefined || foto == '') {
+        return;
+    }
+    qtdfotosGaleria++;
+    if (trFotos == 2 && divFoto != '') {
+        let galeria = document.getElementById('galeria');
+        let innerHTML = `
+                <div  pdt-10 plr-20 fotopadrao" >
+                    <table width="100%" class="fotopadrao">
+                        <tbody>
+                            <tr class="page-report-content">${divFoto}</tr>
+                        </tbody>
+                    </table>
+                </div>`;
+        // addContentMain(innerHTML);
+        galeria.innerHTML += innerHTML;
+        divFoto = '';
+        trFotos = 0;
+    }
+    trFotos++;
+    divFoto += `
+            <td align="center" class="td-img">
+                <a href="${foto}" class="item-foto">
+                    <img src="${foto}" class="fotopadraomax" />
+                </a>
+            </td>`;
+    if (trFotos == 2 || ultimafoto == true) {
+        let galeria = document.getElementById('galeria');
+        let innerHTML = `
+                <div class="pdt-10 plr-20">
+                    <table width="100%" class="border-rounded-img">
+                        <tbody>
+                            <tr class="page-report-content">${divFoto}</tr>
+                        </tbody>
+                    </table>
+                </div>`;
+        // addContentMain(innerHTML);
+        galeria.innerHTML += innerHTML;
+        divFoto = '';
+        trFotos = 0;
+    }
+}
 function addSecao(secoes) {
     let secao = '';
     let fotos = '';
+    let itemsecao = 0;
     let body = document.getElementById('body');
     for (const chave in secoes) {
+        itemsecao++;
         const secao = secoes[chave];
         let total = secao.itens.length;
         _secao = '';
@@ -206,13 +255,14 @@ function addSecao(secoes) {
         linhaTamanho = 0;
         let linhaAntes = 0;
         let tamanhoArrayAntes = 0;
+        let limitChar = 46;
         secao.itens.forEach(item => {
             index++;
             item.tamanho = item.descricao.length + item.valor.length + 2;
             if (!(linha in _tr_tds)) {
                 _tr_tds[linha] = [];
             }
-            if (item.tamanho > 50) {
+            if (item.tamanho >= limitChar) {
                 linhaAntes = linha;
                 tamanhoArrayAntes = _tr_tds[linha].length;
                 if (tamanhoArrayAntes >= 1) {
@@ -228,7 +278,7 @@ function addSecao(secoes) {
             }
             linhaTamanho += item.tamanho;
             _tr_tds[linha].push({ item: item });
-            if (_tr_tds[linha].length == 2 || item.tamanho > 50) {
+            if (_tr_tds[linha].length == 2 || item.tamanho >= limitChar) {
                 linha++;
                 _tr_tds[linha] = [];
                 linhaTamanho = 0;
@@ -248,94 +298,47 @@ function addSecao(secoes) {
                     </div>
                 </td>`;
             });
-            _tr += `<tr>${_tds}</tr>`;
+            _tr += `<tr class="border-none page-report-content" >${_tds}</tr>`;
         });
 
         //Seção
         if (_tr) {
-            _secao += `<tr class="page-report-content">
-                    <td class="pdt-10 plr-20">
-                        <span class="titulo-atividade">${secao.descricao}</span>
-                        <table width="100%" class="border-rounded" cellpadding="0" cellspacing="0">
-                            <tbody class="border-none">
-                                <tr class="border-none">
-                                    <td class="border-none" width="100%" align="left">
-                                        <table width="100%" class=" m-t-0 m-b-0">
-                                            ${_tr}
-                                        </table>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </td >
-                </tr> `;
+            _secao += `
+            <div class="page-report-content pdt-10 plr-20">
+                <span class="titulo-atividade">${secao.descricao}</span>
+                <table width="100%" class="border-rounded" cellpadding="0" cellspacing="0">
+                    <tbody class="border-none">
+                        ${_tr}
+                    </tbody>
+                </table>
+            </div>`;
         }
 
         //Observações
         if (secao.observacao) {
-            _secao += `<tr class="page-report-content">
-                <td class="pdt-10 plr-20">
+            _secao += `<div class="page-report-content pdt-10 plr-20">
                     <span class="titulo-atividade">Observações</span>
                     <table width="100%" class="border-rounded" cellpadding="0" cellspacing="0">
                         <tbody class="border-none">
-                            <tr class="border-none">
-                                <td class="border-none" width="100%" align="left">
-                                    <table width="100%" class=" m-t-0 m-b-0">
-                                        <tr>
-                                            <td style="width:100%;min-height: 40px;">
-                                                <span id="largura" style="width: 100%; display: block;">${secao.observacao}</span>
-                                            </td>
-                                        </tr>
-                                    </table>
+                            <tr class="border-none page-report-content">
+                               <td style="width:100%;min-height: 40px;">
+                                    <span id="largura" style="width: 100%; display: block;">${secao.observacao}</span>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-                </td>
-            </tr>`;
+                </div>`;
         }
+        let totalfotossecao = 0;
+        secao.fotos.forEach(async (foto) => {
 
-        //Fotos Padrao
-        let totalFotos = secao.fotos.length;
-        indexFotos = 0;
-        if (totalFotos > 0) {
-            _tr = '';
-            _tds = '';
-            secao.fotos.forEach(foto => {
-                indexFotos++;
-                _tds += `<td align="center"><img onclick="window.open('${foto}', '_blank');" src="${foto}" class="fotopadraomax"></td>`;
-                if (indexFotos % 2 == 0 || indexFotos >= totalFotos) {
-                    _secao += `
-                    <tr class="page-report-content">
-                        <td class="pdt-10 plr-20 fotopadrao">
-                            <span class="titulo-atividade">Foto Padrão</span>
-                            <table width="100%" class="fotopadrao">
-                                <tbody>
-                                    <tr>${_tds}</tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>`;
-                    _tds = '';
-                }
-            });
-            if (_tds) {
-                _secao += `
-                    <tr class="page-report-content">
-                        <td class="pdt-10 plr-20 fotopadrao">
-                            <span class="titulo-atividade">Foto Padrão</span>
-                            <table width="100%" class="fotopadrao">
-                                <tbody>
-                                    <tr>${_tds}</tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>`;
-                _tds = '';
-            }
-        }
+            totalfotossecao++;
+            let ultimafoto = (itemsecao == total && secao.fotos.length == totalfotossecao);
+            addFoto(foto, ultimafoto, secao.descricao);
+        });
+
         if (_secao) {
-            addContentTable(_secao);
+            addContentMain(_secao);
             _secao = '';
         }
     }
@@ -344,41 +347,44 @@ function addSecao(secoes) {
 function addContentTable(html) {
 
     let table = document.getElementById('content-page');
-    table.innerHTML += html
+    table.innerHTML += html;
     // table.insertAdjacentHTML('beforeend', html);
     // table.innerHTML(html);
+}
+function addContentBody(html) {
+    let body = document.body;
+    body.innerHTML += html;
+}
+
+
+function addContentMain(html) {
+    let pages = document.getElementById('main');
+    pages.innerHTML += html;
 }
 
 function addCabecalho(pedido, data) {
 
-    let tr = `<tr class="page-report-content">
-                <td class="pdt-10 plr-20">
-                    <span class="titulo-atividade"><label style="padding-top: 15px;">Cabeçalho</label></span>
-                    <table width="100%" class="border-rounded" cellpadding="0" cellspacing="0">
-                        <tbody class="border-none">
-                            <tr class="border-none">
-                                <td class="border-none" width="100%" align="left">
-                                    <p class="m-t-0 m-b-0">
-                                        <label>Número: </label> <span id="pedido">${pedido}</span><br>
-                                        <label>Vendedor: </label><span id="vendedor">${data.vendedor}</span><br>
-                                        <label>Categoria de Vendas: </label> <span id="categoriaVendas">${data.categoriaVendas}</span><br>
-                                        <label>Integradora: </label> <span id="integradora">${data.integradora}</span><br>
-                                        <label>Projeto: </label> <span id="projeto">${data.projeto}</span>
-                                    </p>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </td>
-            </tr>`;
-    addContentTable(tr);
-    tr = '';
+    let cabecalho = `
+    <div class="page-report-content pdt-10 plr-20">
+        <label class="titulo-atividade" for="cabecalho">Cabeçalho</label>
+        <div id="cabecalho" class="border-rounded" >
+            <p class="m-t-0 m-b-0">
+                <label>Número: </label> <span id="pedido">${pedido}</span><br>
+                <label>Vendedor: </label><span id="vendedor">${data.vendedor}</span><br>
+                <label>Categoria de Vendas: </label> <span id="categoriaVendas">${data.categoriaVendas}</span><br>
+                <label>Integradora: </label> <span id="integradora">${data.integradora}</span><br>
+                <label>Projeto: </label> <span id="projeto">${data.projeto}</span>
+            </p>
+        </div>
+    </div>`;
+    addContentMain(cabecalho);
+    cabecalho = '';
 }
 
 function addDadosCliente(data) {
     //Dados do Cliente
-    tr = `<tr class="page-report-content">
-        <td class="pdt-10 plr-20">
+    tr = `
+        <div class="page-report-content pdt-10 plr-20">
             <span class="titulo-atividade">Dados do Cliente</span>
             <table width="100%" class="border-rounded" cellpadding="0" cellspacing="0">
                 <tbody class="border-none">
@@ -459,22 +465,19 @@ function addDadosCliente(data) {
                     </tr>
                 </tbody>
             </table>
-        </td>
-    </tr>`;
-    addContentTable(tr);
+        </div>
+    `;
+    addContentMain(tr);
     tr = '';
 }
 
 function addParticipantes(data) {
     //Participantes
-    tr = `<tr class="page-report-content">
-        <td class="pdt-10 plr-20">
+    tr = `
+        <div class="page-report-content pdt-10 plr-20">
             <span class="titulo-atividade">Participantes</span>
             <table width="100%" class="border-rounded" cellpadding="0" cellspacing="0">
-                <tbody class="border-none">
-                    <tr class="border-none">
-                        <td class="border-none" width="100%" align="left">
-                            <table width="100%" class="m-t-0 m-b-0">`;
+                <tbody class="border-none">`;
 
     for (let index = 1; index <= data.length; index++) {
         let idNome = `#participante_nome_${index} `;
@@ -494,14 +497,13 @@ function addParticipantes(data) {
                     </td>
                 </tr>`;
     }
-    tr += `</table></td></tr></tbody></table></td></tr>`;
-    addContentTable(tr);
+    tr += `</tbody></table></div>`;
+    addContentMain(tr);
     tr = '';
 }
 
 function addInformacoesPreliminares(data) {
-    tr = `<tr class="page-report-content">
-                <td class="pdt-10 plr-20">
+    tr = `<div class="page-report-content pdt-10 plr-20">
                     <span class="titulo-atividade">Informações Preliminares</span>
                     <table width="100%" class="border-rounded" cellpadding="0" cellspacing="0">
                         <tbody class="border-none">
@@ -589,16 +591,22 @@ function addInformacoesPreliminares(data) {
                             </tr>
                         </tbody>
                     </table>
-                </td>
-            </tr>`;
-    addContentTable(tr);
+                </div>`;
+    addContentMain(tr);
     tr = '';
+    let qtdfoto = 0;
+    let totalfotosPre = data.fotos.length;
+    data.fotos.forEach(async (foto) => {
+        qtdfoto++;
+        let utimafoto = (totalfotosPre == qtdfoto);
+        addFoto(foto, utimafoto, 'preliminares');
+    });
 }
 
 function addCondideracaorIniciais(data) {
     if (data.descreva_consideracaoes_iniciais) {
-        let tr = `<tr class="page-report-content">
-        <td class="pdt-10 plr-20">
+        let tr = `
+        <div class="page-report-content pdt-10 plr-20">
             <span class="titulo-atividade">Considerações Iniciais</span>
             <table width="100%" class="border-rounded" cellpadding="0" cellspacing="0">
                 <tbody class="border-none">
@@ -615,12 +623,75 @@ function addCondideracaorIniciais(data) {
                     </tr>
                 </tbody>
             </table>
-        </td>
-    </tr>`;
-        addContentTable(tr);
+        </div>`;
+        addContentMain(tr);
         tr = '';
     }
 
+}
+async function getMeta(url) {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+
+        img.onload = function () {
+            resolve({
+                w: this.width,
+                h: this.height
+            });
+        };
+
+        img.onerror = reject;
+
+        img.src = url;
+    });
+}
+async function addGaleriaFotoPadrao(data) {
+    let totalFotos = data.length;
+    indexFotos = 0;
+    if (totalFotos > 0) {
+        _tr = '';
+        _tds = '';
+        qtd = 0;
+        let div = '';
+        await data.forEach(async (foto) => {
+            indexFotos++;
+            await getMeta(foto).then(end => {
+                qtd++;
+
+                td = `
+                <div class="d-flex">
+                    <a href="${foto}" target="_blank" rel="noopener">
+                        <img class="fotopadraomax" src="${foto}" data-size="w:${end.w},h:${end.h},qtd:${qtd}">
+                    </a>
+                </div>`;
+                if (end.w < end.h) {
+                    if (qtd == 2 || indexFotos >= totalFotos) {
+                        _tds += td;
+                        div = `<div class="page-report-content">${_tds}</div>`;
+                        addContentMain(div);
+                        div = '';
+                        _tds = '';
+                        qtd = 0;
+                    } else {
+                        _tds += td;
+                    }
+                } else {
+                    if (_tds) {
+                        div = `<div class="page-report-content">${_tds}</div>`;
+                        addContentMain(div);
+                        div = '';
+                        _tds = '';
+                        qtd = 0;
+                    }
+                    div = `<div class="page-report-content">${td}</div>`;
+                    addContentMain(div);
+                    div = '';
+                    _tds = '';
+                    qtd = 0;
+                }
+            });
+        });
+    }
 }
 
 function addFotoPadrao(data) {
@@ -668,25 +739,28 @@ function addFotoPadrao(data) {
 }
 async function esperarImagens() {
     return await Promise.all(
-        Array.from(document.images).filter(
-            img => !img.complete).map(
-                img => new Promise(resolve => {
-                    img.onload = img.onerror = resolve;
-                })
-            ));
+        Array.from(document.images).filter(img => !img.complete).map(
+            img => new Promise(resolve => {
+                img.onload = img.onerror = resolve;
+            })
+        )
+    );
 }
 
 async function formataA4() {
     let headerContentHTML = getHeader();
     let footerContentHTML = getFooter();
 
-    const origem = document.getElementById('content-page');
+    // const origem = document.getElementById('content-page');
+    const origem = document.getElementById('pages');
     const destino = document.body;
 
     const alturaA4 = 1000; // 26.7cm em pixels (ajustado para conteúdo)
     const margemHeader = 105; // reserva header + footer
-    const margemFooter = 60; // reserva header + footer
+    // const margemFooter = 60; // reserva header + footer
+    const margemFooter = 0; // reserva header + footer
     const alturaUtil = alturaA4 - (margemHeader + margemFooter);
+    const alturaUtilmm = 243;
 
     await esperarImagens();
 
@@ -709,17 +783,16 @@ async function formataA4() {
     const MAX = 300;
     while (elementos.length > 0) {
         if (++safety > MAX) {
-            console.error('Loop interrompido por segurança');
             break;
         }
         const el = elementos.shift(); // REMOVE da fila → progresso garantido
         temp.appendChild(el.cloneNode(true));
-
-        if (temp.scrollHeight > alturaUtil) {
+        let scrollHeightmm = (temp.scrollHeight * 25.4) / 96;
+        if (scrollHeightmm > alturaUtilmm) {
             let tamanhoAntesRemover = temp.scrollHeight;
-
             temp.removeChild(temp.lastElementChild);
-            let sobra = (alturaUtil - temp.scrollHeight);
+            scrollHeightmm = (temp.scrollHeight * 25.4) / 96;
+            let sobra = (alturaUtilmm - scrollHeightmm);
             numeroPagina++;
             paginas.push(criarPagina(numeroPagina, headerContentHTML, temp.innerHTML, footerContentHTML));
 
@@ -736,26 +809,14 @@ async function formataA4() {
 
     document.body.removeChild(temp);
 
-    document.getElementById('page-content-page').remove();
+    document.getElementById('pages').remove();
     // renderiza Body
     destino.innerHTML += paginas.join('');
     let loadHtml = document.getElementById('body');
-    await esperarImagens();
+    // await esperarImagens();
     paginas = undefined;
 }
 function criarPagina(numeropagina, headerContentHTML, conteudoHTML, footerContentHTML) {
-    /* 
-    return `
-        <div class="pagebreak-before">
-            <div class="page" >
-                <table border=0 class="page-report-A4" id="page-${numeropagina}" width="100%">
-                    <thead class="page-header" >${headerContentHTML}</thead>
-                    <tbody class="page-content" >${conteudoHTML}</tbody>
-                    <tfoot class="page-footer" >${footerContentHTML}</tfoot>
-                </table>
-            </div>
-        </div>`;
-    */
     return `
         <div class="page" id="page-${numeropagina}">
             <div class="page-inner">
@@ -768,7 +829,6 @@ function criarPagina(numeropagina, headerContentHTML, conteudoHTML, footerConten
 
 let morphInterval = null;
 let index = 0;
-
 function showLoader() {
     const loader = document.getElementById('loading-spinner-2');
     const icons = loader.querySelectorAll('.icon-loader');
@@ -779,9 +839,11 @@ function showLoader() {
     if (morphInterval) return;
 
     morphInterval = setInterval(() => {
-        icons[index].classList.remove('active');
+        item = icons[index];
+        if (item) { item.classList.remove('active'); }
         index = (index + 1) % icons.length;
-        icons[index].classList.add('active');
+        item = icons[index];
+        if (item) { item.classList.add('active'); }
     }, 1000);
 }
 
