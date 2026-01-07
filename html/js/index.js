@@ -108,7 +108,6 @@ async function setData(data) {
     hideLoader();
 }
 async function addPrintPreview() {
-    //document.getElementById('btprint').style.display = 'block';
     const script = document.createElement("script");
     // script.src = 'https://unpkg.com/pagedjs/dist/paged.polyfill.js';
     script.src = 'js/paged.polyfill.js';
@@ -370,6 +369,7 @@ function addCabecalho(pedido, data) {
         <label class="titulo-atividade" for="cabecalho">Cabeçalho</label>
         <div id="cabecalho" class="border-rounded" >
             <p class="m-t-0 m-b-0">
+                <label>Data de execução: </label> <span id="dataexec">${data.data} ${data.hora}</span><br>
                 <label>Número: </label> <span id="pedido">${pedido}</span><br>
                 <label>Vendedor: </label><span id="vendedor">${data.vendedor}</span><br>
                 <label>Categoria de Vendas: </label> <span id="categoriaVendas">${data.categoriaVendas}</span><br>
@@ -847,29 +847,28 @@ function showLoader() {
         if (item) { item.classList.add('active'); }
     }, 1000);
 }
-function showbtPrint(show, windowprint = false) {
 
+function showStylePage(show) {
     const pages = document.querySelectorAll('.pagedjs_pagebox');
-    const print = document.getElementById('btprint');
-    print.innerHTML = '';
-    print.style.position = 'fixed';
-    print.style.top = 0;
-    print.style.zIndex = 9999;
-    print.style.marginLeft = '-200px';
     if (show) {
-        print.innerHTML = '<div class="navbar" ><a href="javascript:showbtPrint(false,true)" class="active">IMPRIMIR</a></div>';
-        print.style.display = 'block';
         pages.forEach(page => {
             page.classList.add('previewstyleage');
         });
     } else {
-        print.style.display = 'none';
         pages.forEach(page => {
             page.classList.remove('previewstyleage');
         });
     }
-    if (windowprint) {
-        window.print();
+}
+function showPrintButton(show) {
+    const print = document.getElementById('btprint');
+    if (print) { print.remove(); }
+    if (show == true) {
+        const print = document.createElement("div");
+        print.id = 'btprint';
+        print.classList.add('navbar');
+        print.innerHTML = '<a href="javascript:window.print()" class="active">IMPRIMIR</a>';
+        document.body.appendChild(print);
     }
 }
 function hideLoader() {
@@ -877,7 +876,8 @@ function hideLoader() {
     loader.classList.add('hide');
     setTimeout(() => {
         loader.style.display = 'none';
-        showbtPrint(true);
+        showStylePage(true);
+        showPrintButton(true);
         clearInterval(morphInterval);
         morphInterval = null;
     }, 400);
