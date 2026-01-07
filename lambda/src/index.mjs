@@ -6,6 +6,8 @@ const { Pool } = require('pg');
 async function getCabecalho(schema, client, pedido) {
     let sql = `
     select
+        TO_CHAR(task.tsk_realfinaldatehour::date, 'dd/mm/yyyy' ) as data,
+        TO_CHAR(task.tsk_realfinaldatehour::time, 'HH24:MI:SS' ) as hora,
         task.tsk_integrationid as numeroPedido,
             agent.age_name as vendedor,
             (
@@ -38,6 +40,8 @@ async function getCabecalho(schema, client, pedido) {
         };
     }
     return {
+        data: res.rows[0].data,
+        hora: res.rows[0].hora,
         numeroPedido: res.rows[0].numeroPedido,
         vendedor: res.rows[0].vendedor || '',
         categoriaVendas: res.rows[0].categoriaVendas || '',
@@ -174,6 +178,7 @@ async function getInformacoesPreliminares(schema, client, pedido) {
     return camposMap;
 
 }
+
 
 async function getSecao(schema, client, pedido) {
     // Busca atividades principais
