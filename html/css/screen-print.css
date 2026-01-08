@@ -47,7 +47,7 @@ header {
   overflow: hidden;
   background-color: #333;
   top: 50%;
-  left: 14%;
+  left: 9%;
   position: fixed !important;
   width: 224px;
   z-index: 9999;
@@ -454,7 +454,7 @@ img.bg-capa-bottom {
   }
 }
 
-@page:first {
+@page:first{
   margin: 45mm 0mm 0mm 0mm;
   size: A4;
   width: 210mm;
@@ -492,7 +492,7 @@ img.bg-capa-bottom {
   @bottom-right-corner {
     content: none;
   }
-}
+};
 
 h1,
 h2,
