@@ -103,17 +103,16 @@
             let params = new URLSearchParams(document.location.search);
             let pedido = params.get("pedido");
             getdata(pedido);
-           
         });
-         window.onbeforeprint = function () {
+        window.addEventListener("beforeprint", () => {
             showStylePage(false);
             showPrintButton(false);
-        };
-        window.onafterprint = function () {
+        });
+
+        window.addEventListener("afterprint", () => {
             showStylePage(true);
             showPrintButton(true);
-        };
-        
+        });
     </script>
 </body>
 </html>

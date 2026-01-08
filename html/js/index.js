@@ -291,23 +291,23 @@ function addSecao(secoes) {
             linha.forEach(td => {
                 let item = td.item;
                 _tds += `
-                <td colspan="${colspan}" data-size="${item.tamanho}" style="width:${per}%">
+                <td class="secao-td" colspan="${colspan}" data-size="${item.tamanho}" style="width:${per}%">
                     <div class="form-row">
                         <span class="label">${item.descricao}: </span>
                         <span class="underline-space" id="${item.campo}">${item.valor}</span>
                     </div>
                 </td>`;
             });
-            _tr += `<tr class="border-none page-report-content" >${_tds}</tr>`;
+            _tr += `<tr class="secao-tr border-none page-report-content" >${_tds}</tr>`;
         });
 
         //Seção
         if (_tr) {
             _secao += `
-            <div class="page-report-content pdt-10 plr-20">
-                <span class="titulo-atividade">${secao.descricao}</span>
-                <table width="100%" class="border-rounded" cellpadding="0" cellspacing="0">
-                    <tbody class="border-none">
+            <div class="secao-div page-report-content pdt-10 plr-20">
+                <span class="secao-titulo titulo-atividade">${secao.descricao}</span>
+                <table width="100%" class="secao-table border-rounded" cellpadding="0" cellspacing="0">
+                    <tbody class="secao-body border-none">
                         ${_tr}
                     </tbody>
                 </table>
@@ -316,11 +316,20 @@ function addSecao(secoes) {
 
         //Observações
         if (secao.observacao) {
+            _secao += `
+            <div class="page-report-content pdt-10 plr-20">
+                <div class="secao-titulo">Observações</div>
+                  <div class="secao-bloco border-rounded">
+                    <div class="secao-linha">${secao.observacao}
+                    </div>
+                </div>
+            </div>`;
+            /* 
             _secao += `<div class="page-report-content pdt-10 plr-20">
-                    <span class="titulo-atividade">Observações</span>
-                    <table width="100%" class="border-rounded" cellpadding="0" cellspacing="0">
-                        <tbody class="border-none">
-                            <tr class="border-none page-report-content">
+                    <span class="secao-titulo titulo-atividade">Observações</span>
+                    <table width="100%" class="secao-table border-rounded" cellpadding="0" cellspacing="0">
+                        <tbody class="secao-body border-none">
+                            <tr class="secao-tr border-none page-report-content">
                                <td style="width:100%;min-height: 40px;">
                                     <span id="largura" style="width: 100%; display: block;">${secao.observacao}</span>
                                 </td>
@@ -328,6 +337,7 @@ function addSecao(secoes) {
                         </tbody>
                     </table>
                 </div>`;
+            */
         }
         let totalfotossecao = 0;
         secao.fotos.forEach(async (foto) => {
